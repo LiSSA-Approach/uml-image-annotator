@@ -1,45 +1,75 @@
 import $ from 'jquery';
-// import BpmnModeler from 'bpmn-js/lib/Modeler';
-import BpmnModeler from './custom-modeler';
-import diagramXML from '../resources/default.bpmn';
 
+/* BPMN annotator imports */
+import BpmnModeler from './custom-modeler';
+import bpmnDiagramXML from '../resources/default.bpmn';
+import bpmnExtension from '../resources/model-extension.json';
 import resizeAllModule from './resize-all-rules';
 import OriginModule from 'diagram-js-origin';
 
-import bpmnExtension from '../resources/model-extension.json';
+/* UML annotator imports (added with UML extension) */
+import Settings from './uml-extension/utils/Settings.js';
+import Modes from './uml-extension/utils/Modes.js'
 
-var modeler = new BpmnModeler({
-  container: '#canvas',
-  keyboard: {bindTo: document},
+var modeler,      // modeler that is used. 
+    diagramXML;   // default diagram that is displayed at the start
 
-  moddleExtensions: {
-    bpmnext: bpmnExtension
-  },
 
-  // customize default colors
-  bpmnRenderer: {
-    defaultFillColor: 'none',
-    defaultStrokeColor: 'rgb(255 100 0)' // orange 
-    // defaultStrokeColor: 'rgb(255 255 0)' // yellow
-  },
- 
-  // customize text
-  // textRenderer: {
-  //   defaultStyle: {
-  //     fontSize: '14px',
-  //     fontWeight: 'bold',
-  //   },
-  //   externalStyle: {
-  //     fontSize: '14px',
-  //     fontWeight: 'bold',
-  //   }
-  // },
+/* The selected mode decides wheter a BPMN or UML class diagram is going to be annotated */
+if (Settings.mode === Modes.BPMN) {
 
-  additionalModules: [
-    OriginModule,
-    resizeAllModule,
-  ],
-});
+  var modeler = new BpmnModeler({
+    container: '#canvas',
+    keyboard: {bindTo: document},
+
+    moddleExtensions: {
+      bpmnext: bpmnExtension
+    },
+
+    // customize default colors
+    bpmnRenderer: {
+      defaultFillColor: 'none',
+      defaultStrokeColor: 'rgb(255 100 0)' // orange 
+    },
+  
+    additionalModules: [
+      OriginModule,
+      resizeAllModule,
+    ],
+  });
+
+  diagramXML = bpmnDiagramXML;
+} else if (Settings.mode === Modes.UML_CLASS) {
+
+  //TODO: Change to custom UML Modeler
+  var modeler = new BpmnModeler({
+    container: '#canvas',
+    keyboard: {bindTo: document},
+
+    moddleExtensions: {
+      bpmnext: bpmnExtension
+    },
+
+    // customize default colors
+    bpmnRenderer: {
+      defaultFillColor: 'none',
+      defaultStrokeColor: 'rgb(255 100 0)' // orange 
+    },
+  
+    additionalModules: [
+      OriginModule,
+      resizeAllModule,
+    ],
+  });
+
+  diagramXML = bpmnDiagramXML;
+}
+
+document.title = Settings.mode + ' Annotator';
+$('#diagramType').text(Settings.mode);
+
+
+/* Code from original BPMN annotator */
 
 var container = $('#js-drop-zone');
 
@@ -49,7 +79,6 @@ var sizeVal = document.getElementById("bg-width-val");
 function updateBackgroundSize(bgSize) {
     sizeVal.innerHTML = bgSize;
     sizeSlider.value = bgSize;
-    // console.log(`New slider value: ${this.value}`);
     var canvas = document.getElementById("canvas");
     canvas.style.backgroundSize = `${bgSize}px`;
 }
@@ -70,7 +99,6 @@ async function openDiagram(xml) {
     var match = bgSizeRegex.exec(xml);
     if (match !== null && match.length >= 2) {
         var bgSize = match[1];
-        // console.log(`Parsed backgroundSize=${bgSize}`);
         updateBackgroundSize(bgSize);
     }
 
@@ -195,7 +223,6 @@ function changeBackgroundImage(imgPath) {
     var canvas = document.getElementById("canvas");
     var imgUrl = "url('" + imgPath + "')";
     var bgSize = sizeSlider.value;
-    // console.log(`Changing bg image (size=${bgSize})`);
     canvas.style.backgroundImage = imgUrl;
     canvas.style.backgroundSize = `${bgSize}px`;
     canvas.style.backgroundRepeat = 'no-repeat';
@@ -291,7 +318,6 @@ function shiftBgPosViewport(element) {
         var x = parseInt(res[1]);
         var y = parseInt(res[2]);
         var bgPositionNew = `top ${y}px left ${x}px`;
-        // console.log(`Changing background position to ${bgPositionNew}`);
         var canvas = document.getElementById("canvas");
         canvas.style.backgroundPosition = bgPositionNew;
     }
