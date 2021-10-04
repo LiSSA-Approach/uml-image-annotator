@@ -12,12 +12,12 @@ export default class UmlRules extends RuleProvider {
     /**
      * @constructor module:UmlRules
      */
-    constructor() {
-        super();
+    constructor(eventBus) {
+        super(eventBus);
     }
 
     /**
-     * This method adds new rules during provider initialization
+     * Overwriting this method adjusts exisiting rules for UML context
      */
     init() {
 
