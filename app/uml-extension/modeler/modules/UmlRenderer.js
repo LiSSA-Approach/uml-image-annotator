@@ -35,6 +35,9 @@ export default class UmlRenderer extends BaseRenderer {
 
     /**
      * @constructor module:UmlRenderer
+     * 
+     * @param {EventBus} eventBus 
+     * @param {TextRenderer} textRenderer 
      */
     constructor(eventBus, textRenderer) {
         super(eventBus, PRIORITY);

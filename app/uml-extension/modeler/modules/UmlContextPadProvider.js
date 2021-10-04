@@ -21,6 +21,12 @@ export default class UmlContextPadProvider {
 
     /**
      * @constructor module:UmlContextPadProvider
+     * 
+     * @param {Connect} connect 
+     * @param {ContextPad} contextPad 
+     * @param {Modeling} modeling 
+     * @param {Create} create 
+     * @param {ElementFactory} elementFactory 
      */
     constructor(connect, contextPad, modeling, create, elementFactory) {
         this.connect = connect;

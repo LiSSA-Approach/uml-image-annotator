@@ -25,6 +25,8 @@ export default class UmlRules extends RuleProvider {
     
     /**
      * @constructor module:UmlRules
+     * 
+     * @param {EventBus} eventBus 
      */
     constructor(eventBus) {
         super(eventBus);
