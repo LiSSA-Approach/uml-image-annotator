@@ -3,15 +3,18 @@ import $ from 'jquery';
 /* BPMN annotator imports */
 import BpmnModeler from './custom-modeler';
 import bpmnDiagramXML from '../resources/default.bpmn';
-import bpmnExtension from '../resources/model-extension.json';
+import bpmnModdleExtension from '../resources/model-extension.json';
 import resizeAllModule from './resize-all-rules';
 import OriginModule from 'diagram-js-origin';
 
 /* UML annotator imports (added with UML extension) */
 import Settings from './uml-extension/utils/Settings.js';
 import Modes from './uml-extension/utils/Modes.js'
+import UMLModeler from './uml-extension/modeler/modules';
+import umlDiagramXML from './uml-extension/resources/defaultUML.bpmn';
+import umlModdleExtension from './uml-extension/resources/umlModdleExtension.json';
 
-var modeler,      // modeler that is used. 
+var modeler,      // modeler that is used. Either BpmnModeler or UMLModeler
     diagramXML;   // default diagram that is displayed at the start
 
 
@@ -23,7 +26,7 @@ if (Settings.mode === Modes.BPMN) {
     keyboard: {bindTo: document},
 
     moddleExtensions: {
-      bpmnext: bpmnExtension
+      bpmnext: bpmnModdleExtension
     },
 
     // customize default colors
@@ -39,30 +42,24 @@ if (Settings.mode === Modes.BPMN) {
   });
 
   diagramXML = bpmnDiagramXML;
+
+/* contribution of this annotator extension */
 } else if (Settings.mode === Modes.UML_CLASS) {
 
-  //TODO: Change to custom UML Modeler
-  var modeler = new BpmnModeler({
+  var modeler = new UMLModeler({
     container: '#canvas',
     keyboard: {bindTo: document},
 
     moddleExtensions: {
-      bpmnext: bpmnExtension
+      uml: umlModdleExtension
     },
 
-    // customize default colors
-    bpmnRenderer: {
-      defaultFillColor: 'none',
-      defaultStrokeColor: 'rgb(255 100 0)' // orange 
-    },
-  
     additionalModules: [
-      OriginModule,
-      resizeAllModule,
+      OriginModule
     ],
   });
 
-  diagramXML = bpmnDiagramXML;
+  diagramXML = umlDiagramXML;
 }
 
 document.title = Settings.mode + ' Annotator';

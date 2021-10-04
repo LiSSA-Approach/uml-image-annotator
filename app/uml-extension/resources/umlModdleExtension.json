@@ -1,0 +1,21 @@
+{
+    "name": "Unified Modeling Language (UML)",
+    "uri": "http://www.omg.org/spec/UML/20161101",
+    "prefix": "uml",
+    "associations": [],
+    "types": [
+        {
+            "name": "Node",
+            "superClass": [
+              "bpmn:FlowNode"
+            ]
+        },
+        {
+            "name": "Edge",
+            "superClass": [
+              "bpmn:SequenceFlow"
+            ]
+
+        }
+    ]
+}
