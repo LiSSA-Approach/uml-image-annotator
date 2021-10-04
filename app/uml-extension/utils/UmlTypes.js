@@ -10,5 +10,6 @@ const prefix = Settings.uml_prefix;
  */
  export default Object.freeze({
     CLASS: prefix + "Class",
-    UNDIRECTED_ASSOCIATION: prefix + "UndirectedAssociation"
+    UNDIRECTED_ASSOCIATION: prefix + "UndirectedAssociation",
+    LABEL: prefix + "Label"
 })

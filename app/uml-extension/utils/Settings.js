@@ -11,5 +11,8 @@ export default Object.freeze({
     mode: Modes.UML_CLASS,
 
     /* Prefix for all custom UML elements */
-    uml_prefix: 'uml:'
+    uml_prefix: 'uml:',
+
+    /* Priority for UML modules. If this priority value is higher than priority values of related modules, the UML modules get called first */
+    uml_priority: 2000
 })

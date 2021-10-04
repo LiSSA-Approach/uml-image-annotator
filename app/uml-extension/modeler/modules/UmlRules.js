@@ -10,7 +10,7 @@ import {
   
 
 /* This Rules should be called before standard BpmnRules */
-const HIGH_PRIORITY = 2000;
+const PRIORITY = Settings.uml_priority;
 
 /* Default connection type. Can be changed via Palette */
 var currentConnectionType = UmlTypes.UNDIRECTED_ASSOCIATION
@@ -66,7 +66,12 @@ export default class UmlRules extends RuleProvider {
      */
     canCreate(shape, target) {
 
-        //this makes it possible that all UML elements can be place on the ground, but not on top of each other
+        // it should be possible to place text labels above all other elements
+        if (is(shape, UmlTypes.LABEL)) {
+            return true;
+        }
+
+        // this makes it possible that all UML elements can be place on the ground, but not on top of each other
         return is(target, 'bpmn:Process');
     }
 
@@ -79,7 +84,7 @@ export default class UmlRules extends RuleProvider {
             canConnect = this.canConnect;
 
         //determines when the moved shapes can moved to a new position
-        this.addRule('elements.move', HIGH_PRIORITY, function(context) {
+        this.addRule('elements.move', PRIORITY, function(context) {
 
             let target = context.target,
                 shapes = context.shapes;
@@ -95,7 +100,7 @@ export default class UmlRules extends RuleProvider {
         });
         
         //determines if a new shape can be created on a target
-        this.addRule('shape.create', HIGH_PRIORITY, function(context) {
+        this.addRule('shape.create', PRIORITY, function(context) {
             let target = context.target,
                 shape = context.shape;
         
@@ -103,7 +108,7 @@ export default class UmlRules extends RuleProvider {
         });
         
         //all UML elements should be resizable
-        this.addRule('shape.resize', HIGH_PRIORITY, function(context) {
+        this.addRule('shape.resize', PRIORITY, function(context) {
             let shape = context.shape,
                 type = shape.type;
         
@@ -111,7 +116,7 @@ export default class UmlRules extends RuleProvider {
         });
         
         //determines if connecting source and target is possible and returns correct connection type
-        this.addRule('connection.create', HIGH_PRIORITY, function(context) {
+        this.addRule('connection.create', PRIORITY, function(context) {
             let source = context.source,
                 target = context.target;
         
@@ -119,7 +124,7 @@ export default class UmlRules extends RuleProvider {
         });
         
         //determines which connection type should be displayed when starting reconnect
-        this.addRule('connection.reconnectStart', HIGH_PRIORITY, function(context) {
+        this.addRule('connection.reconnectStart', PRIORITY, function(context) {
             let connection = context.connection,
                 source = context.hover || context.source,
                 target = connection.target;
@@ -128,7 +133,7 @@ export default class UmlRules extends RuleProvider {
         });
         
         //determines which connection type should be displayed when ending reconnect
-        this.addRule('connection.reconnectEnd', HIGH_PRIORITY, function(context) {
+        this.addRule('connection.reconnectEnd', PRIORITY, function(context) {
             let connection = context.connection,
                 source = connection.source,
                 target = context.hover || context.target;
@@ -137,7 +142,7 @@ export default class UmlRules extends RuleProvider {
         });
         
         //determines which connection type should be used after reconnect
-        this.addRule('connection.reconnect', HIGH_PRIORITY, function(context) {
+        this.addRule('connection.reconnect', PRIORITY, function(context) {
             let connection = context.connection,
                 source = connection.source,
                 target = context.hover || context.target;

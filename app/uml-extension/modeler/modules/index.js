@@ -22,12 +22,22 @@ import UmlRenderer from './UmlRenderer';
  */
 import UmlRules from './UmlRules';
 
+/**
+ * BehaviorModule that includes an adjusted ResizeBehavior for UML Text Labels
+ * Decreases Min Size of Labels to a minimum to refine the annotation
+ * This module is copied from 'app/custom-modeling-behavior' and adjusted to UML context
+ */
+import BehaviorModule from './uml-modeling-behavior';
+
 export default {
   __init__: [
     'contextPadProvider',
     'umlRenderer',
     'umlRules',
     'paletteProvider'
+  ],
+  __depends__: [
+    BehaviorModule
   ],
   contextPadProvider: [ 'type', UmlContextPadProvider ],
   umlRenderer: [ 'type', UmlRenderer ],

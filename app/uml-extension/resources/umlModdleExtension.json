@@ -19,6 +19,48 @@
             "isAbstract": true
         },
         {
+          "name": "Label",
+          "superClass": [
+            "bpmn:TextAnnotation"
+          ],
+          "properties": [
+            {
+              "name": "belongsTo",
+              "type": "String",
+              "isRef": true,
+              "isAttr": true
+            },
+            {
+              "name": "labelType",
+              "type": "LabelType",
+              "isAttr": true
+            }
+          ]
+        },
+        {
+          "name": "LabelType",
+          "literalValues": [
+            {
+              "name": "className"
+            },
+            {
+              "name": "attribute"
+            },
+            {
+              "name": "method"
+            },
+            {
+              "name": "edgeLabeling"
+            },
+            {
+              "name": "sourceMultiplicity"
+            },
+            {
+              "name": "targetMultiplicity"
+            }
+          ]
+        },
+        {
             "name": "Class",
             "superClass": [
               "uml:Node"

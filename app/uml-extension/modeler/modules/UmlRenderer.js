@@ -23,7 +23,7 @@ const BORDER_RADIUS = 0;
 const STROKE_WIDTH = 2;
 
 /* This Renderer should be called before standard BpmnRenderer */
-const HIGH_PRIORITY = 2000;
+const PRIORITY = Settings.uml_priority;
 
 /**
  * UML Renderer
@@ -36,8 +36,10 @@ export default class UmlRenderer extends BaseRenderer {
     /**
      * @constructor module:UmlRenderer
      */
-    constructor(eventBus) {
-        super(eventBus, HIGH_PRIORITY);
+    constructor(eventBus, textRenderer) {
+        super(eventBus, PRIORITY);
+
+        this.textRenderer = textRenderer;
     }
 
     /**
@@ -53,6 +55,8 @@ export default class UmlRenderer extends BaseRenderer {
 
         if (type === UmlTypes.CLASS) {
             return UmlRenderUtil.drawRectangle(parent, shape, BORDER_RADIUS, COLOR_RED, STROKE_WIDTH, NO_FILLCOLOR);
+        } else if (type === UmlTypes.LABEL) {
+            return UmlRenderUtil.drawTextLabel(parent, shape, this.textRenderer);
         }
 
     }
@@ -67,7 +71,7 @@ export default class UmlRenderer extends BaseRenderer {
     getShapePath(shape) {
         let type = shape.type;
 
-        if (type === UmlTypes.CLASS) {
+        if (type === UmlTypes.CLASS || type === UmlTypes.LABEL) {
             return getRectPath(shape);
         }
     }

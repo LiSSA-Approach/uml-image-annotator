@@ -8,6 +8,9 @@ import {
     assign
 } from 'min-dash';
 
+import UmlTypes from '../../utils/UmlTypes';
+import LabelTypes from '../../utils/LabelTypes';
+
 /**
  * UML Context Pad Provider
  * Decides which actions are executable from each UML element
@@ -19,9 +22,11 @@ export default class UmlContextPadProvider {
     /**
      * @constructor module:UmlContextPadProvider
      */
-    constructor(connect, contextPad, modeling) {
+    constructor(connect, contextPad, modeling, create, elementFactory) {
         this.connect = connect;
         this.modeling = modeling;
+        this.create = create;
+        this.elementFactory = elementFactory;
 
         contextPad.registerProvider(this);
     }
@@ -36,9 +41,12 @@ export default class UmlContextPadProvider {
     getContextPadEntries(element) {
 
         let connect = this.connect,
-            modeling = this.modeling;
+            modeling = this.modeling,
+            create = this.create,
+            elementFactory = this.elementFactory;
 
-        // starts connecting passed element as source
+        /* Event Handler functions */
+        
         function _startConnect(event, element, autoActivate) {
             connect.start(event, element, autoActivate);
         }
@@ -48,11 +56,39 @@ export default class UmlContextPadProvider {
             modeling.removeElements([ element ]);
         }
 
+        // creates action for passed label type
+        function _createLabelAction(labelType) {
+
+            /* called each time a text label action is triggered */
+            /* creates label model and view */
+            function _createTextLabel(event) {
+                let shape = elementFactory.create('shape', { type: UmlTypes.LABEL });
+
+                modeling.updateProperties(shape, {
+                    belongsTo: element.id,
+                    labelType: labelType
+                });
+                create.start(event, shape);
+            }
+
+            return {
+                group: "addLabel",
+                className: "bpmn-icon-receive",
+                title: "Add " + labelType,
+                action: {
+                    click: _createTextLabel,
+                    dragstart: _createTextLabel
+                }
+            }
+        }
+
+        /* Context Pad entries */
+
         let actions = {};
 
         let businessObject = element.businessObject;
 
-        if (isAny(businessObject, ['uml:Node', 'uml:Edge'])) {
+        if (isAny(businessObject, ['uml:Node', 'uml:Edge', 'uml:Label'])) {
 
             assign(actions, {
                 'edit': {
@@ -79,6 +115,30 @@ export default class UmlContextPadProvider {
                         dragstart: _startConnect
                     }
                 }
+            });
+        }
+
+        if (isAny(businessObject, ['uml:Edge'])) {
+
+            assign(actions, {
+                'addLabeling': _createLabelAction(LabelTypes.EDGE_LABELING)
+            });
+        }
+
+        if (isAny(businessObject, ['uml:Class'])) {
+
+            assign(actions, {
+                'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
+                'addAttribute': _createLabelAction(LabelTypes.ATTRIBUTE),
+                'addMethod': _createLabelAction(LabelTypes.METHOD)
+            });
+        }
+
+        if (isAny(businessObject, ['uml:Association'])) {
+
+            assign(actions, {
+                'addSourceMultiplicity': _createLabelAction(LabelTypes.SOURCE_MULT),
+                'addTargetMultiplicity': _createLabelAction(LabelTypes.TARGET_MULT)
             });
         }
         
