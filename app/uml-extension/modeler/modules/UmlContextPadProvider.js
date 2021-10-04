@@ -19,8 +19,9 @@ export default class UmlContextPadProvider {
     /**
      * @constructor module:UmlContextPadProvider
      */
-    constructor(connect, contextPad) {
+    constructor(connect, contextPad, modeling) {
         this.connect = connect;
+        this.modeling = modeling;
 
         contextPad.registerProvider(this);
     }
@@ -34,15 +35,37 @@ export default class UmlContextPadProvider {
      */
     getContextPadEntries(element) {
 
-        let connect = this.connect;
+        let connect = this.connect,
+            modeling = this.modeling;
 
+        // starts connecting passed element as source
         function _startConnect(event, element, autoActivate) {
             connect.start(event, element, autoActivate);
+        }
+
+        // copied from bpmn-js/lib/features/context-pad/ContextPadProvider
+        function _removeElement() {
+            modeling.removeElements([ element ]);
         }
 
         let actions = {};
 
         let businessObject = element.businessObject;
+
+        if (isAny(businessObject, ['uml:Node', 'uml:Edge'])) {
+
+            assign(actions, {
+                'edit': {
+                    group: 'remove',
+                    className: 'bpmn-icon-trash',
+                    title: 'Remove UML element',
+                    action: {
+                        click: _removeElement,
+                        dragstart: _removeElement
+                    }
+                }
+            });
+        }
 
         if (isAny(businessObject, ['uml:Node'])) {
 
@@ -61,5 +84,4 @@ export default class UmlContextPadProvider {
         
         return actions;
     }
-
 }
