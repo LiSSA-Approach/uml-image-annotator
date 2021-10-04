@@ -10,7 +10,7 @@ import OriginModule from 'diagram-js-origin';
 /* UML annotator imports (added with UML extension) */
 import Settings from './uml-extension/utils/Settings.js';
 import Modes from './uml-extension/utils/Modes.js'
-import UMLModeler from './uml-extension/modeler/modules';
+import UmlModeler from './uml-extension/modeler';
 import umlDiagramXML from './uml-extension/resources/defaultUML.bpmn';
 import umlModdleExtension from './uml-extension/resources/umlModdleExtension.json';
 
@@ -46,7 +46,7 @@ if (Settings.mode === Modes.BPMN) {
 /* contribution of this annotator extension */
 } else if (Settings.mode === Modes.UML_CLASS) {
 
-  var modeler = new UMLModeler({
+  var modeler = new UmlModeler({
     container: '#canvas',
     keyboard: {bindTo: document},
 

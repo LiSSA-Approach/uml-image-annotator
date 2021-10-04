@@ -12,7 +12,6 @@ export default class UmlContextPadProvider {
      * @constructor module:UmlContextPadProvider
      */
     constructor() {
-        super();
     }
 
     /**

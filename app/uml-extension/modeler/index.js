@@ -1,7 +1,5 @@
 import Modeler from 'bpmn-js/lib/Modeler';
 
-import inherits from 'inherits';
-
 import UmlModules from './modules';
 
 /**
