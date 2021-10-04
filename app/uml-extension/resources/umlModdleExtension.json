@@ -16,6 +16,12 @@
               "bpmn:SequenceFlow"
             ]
 
+        },
+        {
+            "name": "Class",
+            "superClass": [
+              "uml:Node"
+            ]
         }
     ]
 }

@@ -8,5 +8,8 @@ import Modes from './Modes.js'
 export default Object.freeze({
 
     /* Determines which diagram type is going to be annotated */
-    mode: Modes.UML_CLASS
+    mode: Modes.UML_CLASS,
+
+    /* Prefix for all custom UML elements */
+    uml_prefix: 'uml:'
 })
