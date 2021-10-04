@@ -8,20 +8,34 @@
             "name": "Node",
             "superClass": [
               "bpmn:FlowNode"
-            ]
+            ],
+            "isAbstract": true
         },
         {
             "name": "Edge",
             "superClass": [
               "bpmn:SequenceFlow"
-            ]
-
+            ],
+            "isAbstract": true
         },
         {
             "name": "Class",
             "superClass": [
               "uml:Node"
             ]
+        },
+        {
+          "name": "Association",
+          "superClass": [
+            "uml:Edge"
+          ],
+          "isAbstract": true
+        },
+        {
+          "name": "UndirectedAssociation",
+          "superClass": [
+            "uml:Association"
+          ]
         }
     ]
 }

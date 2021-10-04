@@ -2,9 +2,19 @@ import BaseRenderer from 'diagram-js/lib/draw/BaseRenderer';
 import UmlTypes from '../../utils/UmlTypes';
 import UmlRenderUtil from '../../utils/UmlRenderUtil';
 import Settings from '../../utils/Settings';
+
 import {
     getRectPath
-  } from 'bpmn-js/lib/draw/BpmnRenderUtil';
+} from 'bpmn-js/lib/draw/BpmnRenderUtil';
+
+import {
+    createLine
+} from 'diagram-js/lib/util/RenderUtil';
+
+import {
+    append as svgAppend
+  } from 'tiny-svg';
+
 
 const COLOR_RED = '#cc0000';
 const NO_FILLCOLOR = 'none';
@@ -55,6 +65,8 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {String} svg path
      */
     getShapePath(shape) {
+        let type = shape.type;
+
         if (type === UmlTypes.CLASS) {
             return getRectPath(shape);
         }
@@ -69,18 +81,11 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {Snap.svg} returns a Snap.svg paper element
      */
     drawConnection(parent, connection) {
+        let type = connection.type;
 
-    }
-
-    /**
-     * Gets SVG path of connection depending on its type
-     * 
-     * @param {Connection} connection connection to be drawn
-     * 
-     * @returns {String} svg path
-     */
-    getConnectionPath(connection) {
-
+        if (type === UmlTypes.UNDIRECTED_ASSOCIATION) {
+            return svgAppend(parent, createLine(connection.waypoints, {stroke: COLOR_RED, strokeWidth: STROKE_WIDTH}));
+        }
     }
 
     /**
@@ -93,6 +98,7 @@ export default class UmlRenderer extends BaseRenderer {
      */
     canRender(element) {
         let type = element.type;
-        return type.startsWith(Settings.uml_prefix);
+
+        return type && type.startsWith(Settings.uml_prefix);
     }
 }
