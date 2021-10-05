@@ -101,18 +101,16 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {Snap.svg} returns a Snap.svg paper element
      */
     drawConnection(parent, connection) {
-        if (isAny(connection, [UmlTypes.ASSOCIATION])) {
-            let type = connection.type;
-            let colorObject = ColorMap.get(type);
-            let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
+        let type = connection.type;
+        let colorObject = ColorMap.get(type);
+        let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
 
-            //if this association is directed, we add an arrowHead
-            if (is(connection, UmlTypes.DIRECTED_ASSOCIATION)) {
-                attrs.markerEnd = this.renderUtil.marker(type, NO_FILLCOLOR, colorObject.colorCode);
-            }
-            
-            return svgAppend(parent, createLine(connection.waypoints, attrs));
+        //for these types of connections, we need an arrow head
+        if (isAny(connection, [UmlTypes.DIRECTED_ASSOCIATION, UmlTypes.EXTENSION])) {
+            attrs.markerEnd = this.renderUtil.marker(type, NO_FILLCOLOR, colorObject.colorCode)
         }
+
+        return svgAppend(parent, createLine(connection.waypoints, attrs));
     }
 
     /**

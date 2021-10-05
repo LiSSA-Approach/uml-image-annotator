@@ -161,6 +161,7 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
 
             assign(actions, {
+                'Extension': _createConnectAction(UmlTypes.EXTENSION),
                 'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
                 'addAttribute': _createLabelAction(LabelTypes.ATTRIBUTE),
                 'addMethod': _createLabelAction(LabelTypes.METHOD)

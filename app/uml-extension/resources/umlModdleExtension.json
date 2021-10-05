@@ -95,23 +95,29 @@
             ]
         },
         {
-          "name": "Association",
-          "superClass": [
-            "uml:Edge"
-          ],
-          "isAbstract": true
+            "name": "Association",
+            "superClass": [
+              "uml:Edge"
+            ],
+            "isAbstract": true
         },
         {
-          "name": "UndirectedAssociation",
-          "superClass": [
-            "uml:Association"
-          ]
+            "name": "UndirectedAssociation",
+            "superClass": [
+              "uml:Association"
+            ]
         },
         {
-          "name": "DirectedAssociation",
-          "superClass": [
-            "uml:Association"
-          ]
+            "name": "DirectedAssociation",
+            "superClass": [
+              "uml:Association"
+            ]
+        },
+        {
+            "name": "Extension",
+            "superClass": [
+              "uml:Edge"
+            ]
         }
     ]
 }

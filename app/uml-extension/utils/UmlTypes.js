@@ -19,7 +19,8 @@ const prefix = Settings.uml_prefix;
     ASSOCIATION: "Association",
     UNDIRECTED_ASSOCIATION: "UndirectedAssociation",
     DIRECTED_ASSOCIATION: "DirectedAssociation",
-    LABEL: "Label"
+    LABEL: "Label",
+    EXTENSION: "Extension"
 };
 
 for (const [key, type] of Object.entries(types)) {
