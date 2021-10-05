@@ -147,7 +147,8 @@ export default class UmlContextPadProvider {
 
             assign(actions, {
                 'undirectedAssociation': _createConnectAction(UmlTypes.UNDIRECTED_ASSOCIATION),
-                'directedAssociation': _createConnectAction(UmlTypes.DIRECTED_ASSOCIATION)
+                'directedAssociation': _createConnectAction(UmlTypes.DIRECTED_ASSOCIATION),
+                'dependency': _createConnectAction(UmlTypes.DEPENDENCY)
             });
         }
 
@@ -161,11 +162,17 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
 
             assign(actions, {
-                'Extension': _createConnectAction(UmlTypes.EXTENSION),
+                'extension': _createConnectAction(UmlTypes.EXTENSION),
                 'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
                 'addAttribute': _createLabelAction(LabelTypes.ATTRIBUTE),
                 'addMethod': _createLabelAction(LabelTypes.METHOD)
             });
+        }
+
+        if (isAny(businessObject, [UmlTypes.CLASS, UmlTypes.ABSTRACT_CLASS])) {
+            assign(actions, {
+                'realization': _createConnectAction(UmlTypes.REALIZATION)
+            })
         }
 
         if (isAny(businessObject, [UmlTypes.ENUMERATION])) {

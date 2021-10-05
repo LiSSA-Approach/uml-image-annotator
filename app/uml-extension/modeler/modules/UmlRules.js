@@ -58,7 +58,41 @@ export default class UmlRules extends RuleProvider {
 
         //allow connection between UML shapes with currentConnectionType, ignore BPMN shapes (these shouldn't be used anyway)
         if (sourceType.startsWith(Settings.uml_prefix) && targetType.startsWith(Settings.uml_prefix)) {
+
+            //extension connection rules
+            if (currentConnectionType === UmlTypes.EXTENSION) {
+
+                //no object can extend itself
+                if (source === target) {
+                    return false;
+
+                //interfaces shouldn't extend anything other than interfaces
+                } else if ((sourceType === UmlTypes.INTERFACE) && !(targetType === UmlTypes.INTERFACE)) {
+                    return false;
+
+                //classes or abstract classes shouldn't extend an interface. Use realization instead
+                } else if ((sourceType === UmlTypes.CLASS || sourceType === UmlTypes.ABSTRACT_CLASS) && targetType === UmlTypes.INTERFACE) {
+                    currentConnectionType = UmlTypes.REALIZATION;
+
+                //enumerations can't extend and cannot be extended
+                } else if ((sourceType === UmlTypes.ENUMERATION) || (targetType === UmlTypes.ENUMERATION)) {
+                    return false;
+                }
+            
+            //realization connection rules
+            } else if (currentConnectionType === UmlTypes.REALIZATION) {
+                
+                //you can only realize an interface
+                if (!(targetType === UmlTypes.INTERFACE)) {
+                    return false;
+                
+                //enumerations can't realize 
+                } else if (sourceType === UmlTypes.ENUMERATION) {
+                    return false;
+                }
+            }
             return { type: currentConnectionType };
+
         } else {
             return;
         }

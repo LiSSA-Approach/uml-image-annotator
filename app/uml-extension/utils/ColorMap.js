@@ -12,7 +12,9 @@ const colorMap = new Map([
     [UmlTypes.ENUMERATION, { colorName: 'orange', colorCode: '#FF8C00'}],
     [UmlTypes.UNDIRECTED_ASSOCIATION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlTypes.DIRECTED_ASSOCIATION, { colorName: 'red', colorCode: '#cc0000' }],
-    [UmlTypes.EXTENSION, { colorName: 'blue', colorCode: '#0000FF'}]
+    [UmlTypes.EXTENSION, { colorName: 'blue', colorCode: '#0000FF'}],
+    [UmlTypes.REALIZATION, { colorName: 'blue', colorCode: '#0000FF'}],
+    [UmlTypes.DEPENDENCY, { colorName: 'blue', colorCode: '#0000FF'}]
 ]);
 
 export default colorMap;

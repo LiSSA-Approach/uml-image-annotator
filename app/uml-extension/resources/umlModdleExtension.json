@@ -118,6 +118,18 @@
             "superClass": [
               "uml:Edge"
             ]
+        },
+        {
+          "name": "Realization",
+          "superClass": [
+            "uml:Edge"
+          ]
+        },
+        {
+          "name": "Dependency",
+          "superClass": [
+            "uml:Edge"
+          ]
         }
     ]
 }

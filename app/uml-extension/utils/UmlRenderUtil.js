@@ -144,7 +144,7 @@ export default class UmlRenderUtil {
 	 * @param {String} strokeColor 
 	 */
 	_createMarker(id, connectionType, fillColor, strokeColor) {
-		if (connectionType === UmlTypes.DIRECTED_ASSOCIATION) {
+		if (connectionType === UmlTypes.DIRECTED_ASSOCIATION || connectionType === UmlTypes.DEPENDENCY) {
 
 			//same endmarker as bpmn:Association
 			let arrowHead = svgCreate('path');
@@ -160,7 +160,7 @@ export default class UmlRenderUtil {
 				ref: { x: 12, y: 10},
 				scale: 0.5
 			})
-		} else if (connectionType === UmlTypes.EXTENSION) {
+		} else if (connectionType === UmlTypes.EXTENSION || connectionType === UmlTypes.REALIZATION) {
 
 			//same endmarker as bpmn:MessageFlow
 			let arrowHead = svgCreate('path');

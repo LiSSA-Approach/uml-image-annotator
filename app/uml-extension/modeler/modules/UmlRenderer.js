@@ -23,14 +23,12 @@ import {
     isAny
 } from 'bpmn-js/lib/features/modeling/util/ModelingUtil';
 
-import {
-    is
-} from 'bpmn-js/lib/util/ModelUtil';
-
 const NO_FILLCOLOR = 'none';
 
 const BORDER_RADIUS = 0;
 const STROKE_WIDTH = 2;
+const STROKE_DASHARRAY = '5, 5';
+const STROKE_SHAPE = 'square';
 
 /* This Renderer should be called before standard BpmnRenderer */
 const PRIORITY = Settings.uml_priority;
@@ -51,7 +49,6 @@ export default class UmlRenderer extends BaseRenderer {
      * @param {Canvas} canvas
      */
     constructor(eventBus, textRenderer, canvas) {
-        console.log(canvas)
         super(eventBus, PRIORITY);
 
         this.textRenderer = textRenderer;
@@ -106,8 +103,15 @@ export default class UmlRenderer extends BaseRenderer {
         let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
 
         //for these types of connections, we need an arrow head
-        if (isAny(connection, [UmlTypes.DIRECTED_ASSOCIATION, UmlTypes.EXTENSION])) {
+        if (isAny(connection, [UmlTypes.DIRECTED_ASSOCIATION, UmlTypes.EXTENSION, UmlTypes.REALIZATION, UmlTypes.DEPENDENCY])) {
             attrs.markerEnd = this.renderUtil.marker(type, NO_FILLCOLOR, colorObject.colorCode)
+        }
+
+        //for these types of connections, we need dotted lines
+        if (isAny(connection, [UmlTypes.REALIZATION, UmlTypes.DEPENDENCY])) {
+            attrs.strokeDasharray = STROKE_DASHARRAY;
+            attrs.strokeLinecap = STROKE_SHAPE;
+            attrs.strokeLinejoin = STROKE_SHAPE;
         }
 
         return svgAppend(parent, createLine(connection.waypoints, attrs));
