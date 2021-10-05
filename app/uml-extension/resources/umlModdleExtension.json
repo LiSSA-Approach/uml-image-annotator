@@ -12,6 +12,13 @@
             "isAbstract": true
         },
         {
+            "name": "ClassNode",
+            "superClass": [
+              "uml:Node"
+            ],
+            "isAbstract": true
+        },
+        {
             "name": "Edge",
             "superClass": [
               "bpmn:SequenceFlow"
@@ -57,11 +64,32 @@
             },
             {
               "name": "targetMultiplicity"
+            },
+            {
+              "name": "enumValue"
             }
           ]
         },
         {
             "name": "Class",
+            "superClass": [
+              "uml:ClassNode"
+            ]
+        },
+        {
+            "name": "Interface",
+            "superClass": [
+              "uml:ClassNode"
+            ]
+        },
+        {
+            "name": "AbstractClass",
+            "superClass": [
+              "uml:ClassNode"
+            ]
+        },
+        {
+            "name": "Enumeration",
             "superClass": [
               "uml:Node"
             ]

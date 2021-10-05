@@ -94,7 +94,7 @@ export default class UmlContextPadProvider {
 
         let businessObject = element.businessObject;
 
-        if (isAny(businessObject, ['uml:Node', 'uml:Edge', 'uml:Label'])) {
+        if (isAny(businessObject, [UmlTypes.NODE, UmlTypes.EDGE, UmlTypes.LABEL])) {
 
             assign(actions, {
                 'edit': {
@@ -109,7 +109,7 @@ export default class UmlContextPadProvider {
             });
         }
 
-        if (isAny(businessObject, ['uml:Node'])) {
+        if (isAny(businessObject, [UmlTypes.NODE])) {
 
             assign(actions, {
                 'connect': {
@@ -124,14 +124,14 @@ export default class UmlContextPadProvider {
             });
         }
 
-        if (isAny(businessObject, ['uml:Edge'])) {
+        if (isAny(businessObject, [UmlTypes.EDGE])) {
 
             assign(actions, {
                 'addLabeling': _createLabelAction(LabelTypes.EDGE_LABELING)
             });
         }
 
-        if (isAny(businessObject, ['uml:Class'])) {
+        if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
 
             assign(actions, {
                 'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
@@ -140,7 +140,15 @@ export default class UmlContextPadProvider {
             });
         }
 
-        if (isAny(businessObject, ['uml:Association'])) {
+        if (isAny(businessObject, [UmlTypes.ENUMERATION])) {
+
+            assign(actions, {
+                'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
+                'addEnumValue': _createLabelAction(LabelTypes.ENUM_VALUE)
+            });
+        }
+
+        if (isAny(businessObject, [UmlTypes.ASSOCIATION])) {
 
             assign(actions, {
                 'addSourceMultiplicity': _createLabelAction(LabelTypes.SOURCE_MULT),

@@ -3,6 +3,12 @@ import Palette from "diagram-js/lib/features/palette/Palette";
 import Create from "diagram-js/lib/features/create/Create";
 import EventBus from "diagram-js/lib/core/EventBus";
 
+import UmlTypes from "../../utils/UmlTypes";
+import Settings from "../../utils/Settings";
+import ColorMap from "../../utils/ColorMap";
+
+const UML_NODE_GROUP = 'uml-node';
+
 import {
     assign
   } from 'min-dash';
@@ -41,7 +47,10 @@ export default class UmlPaletteProvider {
         let actions = {};
 
         assign(actions, {
-            'create-class': this._createAction('uml:Class', 'uml-node', 'bpmn-icon-lane')
+            'create-class': this._createAction(UmlTypes.CLASS, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.CLASS).colorName),
+            'create-interface': this._createAction(UmlTypes.INTERFACE, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.INTERFACE).colorName),
+            'create-abstractClass': this._createAction(UmlTypes.ABSTRACT_CLASS, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.ABSTRACT_CLASS).colorName),
+            'create-enumeration': this._createAction(UmlTypes.ENUMERATION, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.ENUMERATION).colorName)
         });
 
         return actions;
@@ -67,7 +76,7 @@ export default class UmlPaletteProvider {
         return {
             group: group,
             className: className,
-            title: 'Create ' + elementType.replace('uml:', 'UML '),
+            title: 'Create ' + elementType.replace(Settings.uml_prefix, 'UML '),
             action: {
                 dragstart: _createListener,
                 click: _createListener

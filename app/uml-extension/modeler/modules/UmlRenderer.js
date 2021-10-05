@@ -2,6 +2,7 @@ import BaseRenderer from 'diagram-js/lib/draw/BaseRenderer';
 import UmlTypes from '../../utils/UmlTypes';
 import UmlRenderUtil from '../../utils/UmlRenderUtil';
 import Settings from '../../utils/Settings';
+import ColorMap from '../../utils/ColorMap';
 
 import {
     getRectPath
@@ -15,8 +16,10 @@ import {
     append as svgAppend
   } from 'tiny-svg';
 
+import {
+    isAny
+} from 'bpmn-js/lib/features/modeling/util/ModelingUtil';
 
-const COLOR_RED = '#cc0000';
 const NO_FILLCOLOR = 'none';
 
 const BORDER_RADIUS = 0;
@@ -54,11 +57,12 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {Snap.svg} returns a Snap.svg paper element
      */
     drawShape(parent, shape) {
-        let type = shape.type;
 
-        if (type === UmlTypes.CLASS) {
-            return UmlRenderUtil.drawRectangle(parent, shape, BORDER_RADIUS, COLOR_RED, STROKE_WIDTH, NO_FILLCOLOR);
-        } else if (type === UmlTypes.LABEL) {
+        if (isAny(shape, [UmlTypes.CLASS_NODE, UmlTypes.ENUMERATION])) {
+            let type = shape.type;
+            let colorObject = ColorMap.get(type);
+            return UmlRenderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
+        } else if (isAny(shape, [UmlTypes.LABEL])) {
             return UmlRenderUtil.drawTextLabel(parent, shape, this.textRenderer);
         }
 
@@ -72,9 +76,7 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {String} svg path
      */
     getShapePath(shape) {
-        let type = shape.type;
-
-        if (type === UmlTypes.CLASS || type === UmlTypes.LABEL) {
+        if (isAny(shape, [UmlTypes.CLASS_NODE, UmlTypes.ENUMERATION])) {
             return getRectPath(shape);
         }
     }
@@ -88,10 +90,10 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {Snap.svg} returns a Snap.svg paper element
      */
     drawConnection(parent, connection) {
-        let type = connection.type;
-
-        if (type === UmlTypes.UNDIRECTED_ASSOCIATION) {
-            return svgAppend(parent, createLine(connection.waypoints, {stroke: COLOR_RED, strokeWidth: STROKE_WIDTH}));
+        if (isAny(connection, [UmlTypes.ASSOCIATION])) {
+            let type = connection.type;
+            let colorObject = ColorMap.get(type);
+            return svgAppend(parent, createLine(connection.waypoints, {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH}));
         }
     }
 
