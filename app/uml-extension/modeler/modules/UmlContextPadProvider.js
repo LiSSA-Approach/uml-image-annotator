@@ -1,3 +1,11 @@
+import Connect from "diagram-js/lib/features/connect/Connect";
+import ContextPad from "diagram-js/lib/features/context-pad/ContextPad";
+import Modeling from "bpmn-js/lib/features/modeling/Modeling";
+import Create from "diagram-js/lib/features/create/Create";
+import ElementFactory from "diagram-js/lib/core/ElementFactory";
+import EventBus from "diagram-js/lib/core/EventBus";
+
+
 import { Shape } from 'diagram-js/lib/model';
 
 import {
@@ -10,6 +18,7 @@ import {
 
 import UmlTypes from '../../utils/UmlTypes';
 import LabelTypes from '../../utils/LabelTypes';
+import Settings from '../../utils/Settings';
 
 /**
  * UML Context Pad Provider
@@ -27,12 +36,14 @@ export default class UmlContextPadProvider {
      * @param {Modeling} modeling 
      * @param {Create} create 
      * @param {ElementFactory} elementFactory 
+     * @param {EventBus} eventBus
      */
-    constructor(connect, contextPad, modeling, create, elementFactory) {
-        this.connect = connect;
-        this.modeling = modeling;
-        this.create = create;
-        this.elementFactory = elementFactory;
+    constructor(connect, contextPad, modeling, create, elementFactory, eventBus) {
+        this._connect = connect;
+        this._modeling = modeling;
+        this._create = create;
+        this._elementFactory = elementFactory;
+        this._eventBus = eventBus;
 
         contextPad.registerProvider(this);
     }
@@ -46,23 +57,39 @@ export default class UmlContextPadProvider {
      */
     getContextPadEntries(element) {
 
-        let connect = this.connect,
-            modeling = this.modeling,
-            create = this.create,
-            elementFactory = this.elementFactory;
+        let connect = this._connect,
+            modeling = this._modeling,
+            create = this._create,
+            elementFactory = this._elementFactory,
+            eventBus = this._eventBus;
 
-        /* Event Handler functions */
+        /**************************************************/
+        /************ EVENT HANDLER FUNCTIONS *************/
+        /**************************************************/
         
-        function _startConnect(event, element, autoActivate) {
-            connect.start(event, element, autoActivate);
+        //creates action for passed connection type
+        function _createConnectAction(connectionType) {
+        
+            function _startConnect(event, element, autoActivate) {
+                //tell UmlRules that the connection type should change
+                eventBus.fire('swapConnectionType', connectionType);
+
+                //start connecting with new selected connection type
+                connect.start(event, element, autoActivate);
+            }
+
+            return {
+                group: "connect",
+                className: 'bpmn-icon-connection-multi',
+                title: 'Connect using ' + connectionType.replace(Settings.uml_prefix, 'UML '),
+                action: {
+                    click: _startConnect,
+                    dragstart: _startConnect
+                }
+            }
         }
 
-        // copied from bpmn-js/lib/features/context-pad/ContextPadProvider
-        function _removeElement() {
-            modeling.removeElements([ element ]);
-        }
-
-        // creates action for passed label type
+        //creates action for passed label type
         function _createLabelAction(labelType) {
 
             /* called each time a text label action is triggered */
@@ -88,7 +115,14 @@ export default class UmlContextPadProvider {
             }
         }
 
-        /* Context Pad entries */
+        //copied from bpmn-js/lib/features/context-pad/ContextPadProvider, remove button for each element
+        function _removeElement() {
+            modeling.removeElements([ element ]);
+        }
+
+        /**************************************************/
+        /************* CONTEXT PAD ENTRIES ****************/
+        /**************************************************/
 
         let actions = {};
 
@@ -112,15 +146,8 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlTypes.NODE])) {
 
             assign(actions, {
-                'connect': {
-                    group: 'connect',
-                    className: 'bpmn-icon-connection-multi',
-                    title: 'Connect using currently selected UML connection',
-                    action: {
-                        click: _startConnect,
-                        dragstart: _startConnect
-                    }
-                }
+                'undirectedAssociation': _createConnectAction(UmlTypes.UNDIRECTED_ASSOCIATION),
+                'directedAssociation': _createConnectAction(UmlTypes.DIRECTED_ASSOCIATION)
             });
         }
 

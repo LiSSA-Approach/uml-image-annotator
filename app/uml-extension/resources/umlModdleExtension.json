@@ -106,6 +106,12 @@
           "superClass": [
             "uml:Association"
           ]
+        },
+        {
+          "name": "DirectedAssociation",
+          "superClass": [
+            "uml:Association"
+          ]
         }
     ]
 }

@@ -1,3 +1,4 @@
+import EventBus from "diagram-js/lib/core/EventBus";
 import RuleProvider from 'diagram-js/lib/features/rules/RuleProvider';
 import { Root, Shape } from 'diagram-js/lib/model';
 import Settings from '../../utils/Settings';
@@ -34,6 +35,11 @@ export default class UmlRules extends RuleProvider {
         /* Some classes from the BPMN libary still refer to canConnect() from BpmnRules */ 
         /* This ensures that always the new version of this class is called */
         BpmnRules.prototype.canConnect = this.canConnect;
+
+        /* This event can be triggered on ContextPad to switch the selected connection type */
+        eventBus.on('swapConnectionType', function(event, connectionType) {
+            currentConnectionType = connectionType;
+        });
     }
 
 

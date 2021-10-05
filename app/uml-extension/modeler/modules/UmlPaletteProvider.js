@@ -1,6 +1,6 @@
-import ElementFactory from "diagram-js/lib/core/ElementFactory";
 import Palette from "diagram-js/lib/features/palette/Palette";
 import Create from "diagram-js/lib/features/create/Create";
+import ElementFactory from "diagram-js/lib/core/ElementFactory";
 import EventBus from "diagram-js/lib/core/EventBus";
 
 import UmlTypes from "../../utils/UmlTypes";

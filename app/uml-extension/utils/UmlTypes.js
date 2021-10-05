@@ -18,6 +18,7 @@ const prefix = Settings.uml_prefix;
     ENUMERATION: "Enumeration",
     ASSOCIATION: "Association",
     UNDIRECTED_ASSOCIATION: "UndirectedAssociation",
+    DIRECTED_ASSOCIATION: "DirectedAssociation",
     LABEL: "Label"
 };
 

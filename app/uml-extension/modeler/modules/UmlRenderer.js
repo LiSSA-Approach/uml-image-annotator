@@ -1,3 +1,6 @@
+import EventBus from "diagram-js/lib/core/EventBus";
+import TextRenderer from "bpmn-js/lib/draw/TextRenderer";
+
 import BaseRenderer from 'diagram-js/lib/draw/BaseRenderer';
 import UmlTypes from '../../utils/UmlTypes';
 import UmlRenderUtil from '../../utils/UmlRenderUtil';
@@ -20,6 +23,10 @@ import {
     isAny
 } from 'bpmn-js/lib/features/modeling/util/ModelingUtil';
 
+import {
+    is
+} from 'bpmn-js/lib/util/ModelUtil';
+
 const NO_FILLCOLOR = 'none';
 
 const BORDER_RADIUS = 0;
@@ -41,11 +48,15 @@ export default class UmlRenderer extends BaseRenderer {
      * 
      * @param {EventBus} eventBus 
      * @param {TextRenderer} textRenderer 
+     * @param {Canvas} canvas
      */
-    constructor(eventBus, textRenderer) {
+    constructor(eventBus, textRenderer, canvas) {
+        console.log(canvas)
         super(eventBus, PRIORITY);
 
         this.textRenderer = textRenderer;
+        this.canvas = canvas;
+        this.renderUtil = new UmlRenderUtil(this.textRenderer, this.canvas);
     }
 
     /**
@@ -61,9 +72,9 @@ export default class UmlRenderer extends BaseRenderer {
         if (isAny(shape, [UmlTypes.CLASS_NODE, UmlTypes.ENUMERATION])) {
             let type = shape.type;
             let colorObject = ColorMap.get(type);
-            return UmlRenderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
+            return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
         } else if (isAny(shape, [UmlTypes.LABEL])) {
-            return UmlRenderUtil.drawTextLabel(parent, shape, this.textRenderer);
+            return this.renderUtil.drawTextLabel(parent, shape);
         }
 
     }
@@ -93,7 +104,14 @@ export default class UmlRenderer extends BaseRenderer {
         if (isAny(connection, [UmlTypes.ASSOCIATION])) {
             let type = connection.type;
             let colorObject = ColorMap.get(type);
-            return svgAppend(parent, createLine(connection.waypoints, {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH}));
+            let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
+
+            //if this association is directed, we add an arrowHead
+            if (is(connection, UmlTypes.DIRECTED_ASSOCIATION)) {
+                attrs.markerEnd = this.renderUtil.marker(type, NO_FILLCOLOR, colorObject.colorCode);
+            }
+            
+            return svgAppend(parent, createLine(connection.waypoints, attrs));
         }
     }
 

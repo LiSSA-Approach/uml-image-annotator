@@ -21,7 +21,7 @@ var modeler,      // modeler that is used. Either BpmnModeler or UMLModeler
 /* The selected mode decides wheter a BPMN or UML class diagram is going to be annotated */
 if (Settings.mode === Modes.BPMN) {
 
-  var modeler = new BpmnModeler({
+  modeler = new BpmnModeler({
     container: '#canvas',
     keyboard: {bindTo: document},
 
@@ -46,7 +46,7 @@ if (Settings.mode === Modes.BPMN) {
 /* contribution of this annotator extension */
 } else if (Settings.mode === Modes.UML_CLASS) {
 
-  var modeler = new UmlModeler({
+  modeler = new UmlModeler({
     container: '#canvas',
     keyboard: {bindTo: document},
 
