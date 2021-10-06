@@ -17,8 +17,6 @@ const prefix = Settings.uml_prefix;
     ABSTRACT_CLASS: "AbstractClass",
     ENUMERATION: "Enumeration",
     ASSOCIATION: "Association",
-    UNDIRECTED_ASSOCIATION: "UndirectedAssociation",
-    DIRECTED_ASSOCIATION: "DirectedAssociation",
     LABEL: "Label",
     EXTENSION: "Extension",
     REALIZATION: "Realization",

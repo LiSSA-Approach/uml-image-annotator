@@ -14,7 +14,7 @@ import {
 const PRIORITY = Settings.uml_priority;
 
 /* Default connection type. Can be changed via Palette */
-var currentConnectionType = UmlTypes.UNDIRECTED_ASSOCIATION
+var currentConnectionType = UmlTypes.ASSOCIATION;
 
 /**
  * UML Rules

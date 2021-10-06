@@ -103,7 +103,9 @@ export default class UmlRenderer extends BaseRenderer {
         let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
 
         //for these types of connections, we need an arrow head
-        if (isAny(connection, [UmlTypes.DIRECTED_ASSOCIATION, UmlTypes.EXTENSION, UmlTypes.REALIZATION, UmlTypes.DEPENDENCY])) {
+        if (isAny(connection, [UmlTypes.EXTENSION, UmlTypes.REALIZATION, UmlTypes.DEPENDENCY]) 
+            || (connection.type === UmlTypes.ASSOCIATION && connection.businessObject.directed)) {
+
             attrs.markerEnd = this.renderUtil.marker(type, NO_FILLCOLOR, colorObject.colorCode)
         }
 

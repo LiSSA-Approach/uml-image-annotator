@@ -115,7 +115,7 @@ export default class UmlRenderUtil {
     }
 
 	/**
-	 * Gets marker end url for passed connection type. In case this marker did not exist before, calls _createMarker()
+	 * Gets marker url for passed connection type. In case this marker did not exist before, calls _createMarker()
 	 * Adjusted version of marker() from 'bpmn-js/lib/draw/BpmnRenderer.js'
 	 * 
 	 * @param {String} connectionType 
@@ -144,7 +144,7 @@ export default class UmlRenderUtil {
 	 * @param {String} strokeColor 
 	 */
 	_createMarker(id, connectionType, fillColor, strokeColor) {
-		if (connectionType === UmlTypes.DIRECTED_ASSOCIATION || connectionType === UmlTypes.DEPENDENCY) {
+		if (connectionType === UmlTypes.ASSOCIATION || connectionType === UmlTypes.DEPENDENCY) {
 
 			//same endmarker as bpmn:Association
 			let arrowHead = svgCreate('path');

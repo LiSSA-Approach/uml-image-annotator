@@ -120,38 +120,42 @@ export default class UmlContextPadProvider {
             modeling.removeElements([ element ]);
         }
 
+        //changes connection to direct or undirected, based on previous value
+        function _changeDirected() {
+            modeling.updateProperties(element, {
+                directed: !element.businessObject.directed
+            });
+        }
+
         /**************************************************/
         /************* CONTEXT PAD ENTRIES ****************/
         /**************************************************/
 
-        let actions = {};
+        //every element is removable 
+        let actions = {
+            'edit': {
+                group: 'remove',
+                className: 'bpmn-icon-trash',
+                title: 'Remove UML element',
+                action: {
+                    click: _removeElement,
+                    dragstart: _removeElement
+                }
+            }
+        };
 
         let businessObject = element.businessObject;
 
-        if (isAny(businessObject, [UmlTypes.NODE, UmlTypes.EDGE, UmlTypes.LABEL])) {
-
-            assign(actions, {
-                'edit': {
-                    group: 'remove',
-                    className: 'bpmn-icon-trash',
-                    title: 'Remove UML element',
-                    action: {
-                        click: _removeElement,
-                        dragstart: _removeElement
-                    }
-                }
-            });
-        }
-
+        //every UML node can use association and dependency
         if (isAny(businessObject, [UmlTypes.NODE])) {
 
             assign(actions, {
-                'undirectedAssociation': _createConnectAction(UmlTypes.UNDIRECTED_ASSOCIATION),
-                'directedAssociation': _createConnectAction(UmlTypes.DIRECTED_ASSOCIATION),
+                'association': _createConnectAction(UmlTypes.ASSOCIATION),
                 'dependency': _createConnectAction(UmlTypes.DEPENDENCY)
             });
         }
 
+        //edges can have an edge labeling
         if (isAny(businessObject, [UmlTypes.EDGE])) {
 
             assign(actions, {
@@ -159,6 +163,7 @@ export default class UmlContextPadProvider {
             });
         }
 
+        //class nodes (class, abstract, interface) can use extensions and could have class names, attributes and methods
         if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
 
             assign(actions, {
@@ -169,12 +174,14 @@ export default class UmlContextPadProvider {
             });
         }
 
+        //classes and abstract classes can use realization
         if (isAny(businessObject, [UmlTypes.CLASS, UmlTypes.ABSTRACT_CLASS])) {
             assign(actions, {
                 'realization': _createConnectAction(UmlTypes.REALIZATION)
             })
         }
 
+        //enums have a name and enum values
         if (isAny(businessObject, [UmlTypes.ENUMERATION])) {
 
             assign(actions, {
@@ -183,9 +190,19 @@ export default class UmlContextPadProvider {
             });
         }
 
+        //associations can be changed to directed or undirected and could have src and target multiplicity
         if (isAny(businessObject, [UmlTypes.ASSOCIATION])) {
 
             assign(actions, {
+                'changeDirected': {
+                    group: 'changeDirected',
+                    className: 'bpmn-icon-connection-multi',
+                    title: 'Change connection to directed or undirected',
+                    action: {
+                        click: _changeDirected,
+                        dragstart: _changeDirected
+                    }
+                },
                 'addSourceMultiplicity': _createLabelAction(LabelTypes.SOURCE_MULT),
                 'addTargetMultiplicity': _createLabelAction(LabelTypes.TARGET_MULT)
             });

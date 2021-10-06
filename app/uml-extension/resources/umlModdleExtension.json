@@ -99,18 +99,13 @@
             "superClass": [
               "uml:Edge"
             ],
-            "isAbstract": true
-        },
-        {
-            "name": "UndirectedAssociation",
-            "superClass": [
-              "uml:Association"
-            ]
-        },
-        {
-            "name": "DirectedAssociation",
-            "superClass": [
-              "uml:Association"
+            "properties": [
+              {
+                "name": "directed",
+                "type": "Boolean",
+                "isAttr": true,
+                "default": false
+              }
             ]
         },
         {
