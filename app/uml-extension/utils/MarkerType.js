@@ -1,7 +1,7 @@
 /**
  * Available marker types for UML connections
  * 
- * @module MarkerTypes
+ * @module MarkerType
  */
  export default Object.freeze({
     START: "start",

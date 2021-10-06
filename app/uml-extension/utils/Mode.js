@@ -1,7 +1,7 @@
 /**
  * Modes for Annotator tool. Decides annotated diagram type
  * 
- * @module Modes
+ * @module Mode
  */
  export default Object.freeze({
     BPMN: "BPMN",

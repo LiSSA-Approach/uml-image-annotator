@@ -2,7 +2,7 @@
  * All available UML Class diagram label types
  * Values should be the same as in '../resources/umlModdleExtension.json'
  * 
- * @module LabelTypes
+ * @module LabelType
  */
  export default Object.freeze({
     CLASS_NAME: "className",

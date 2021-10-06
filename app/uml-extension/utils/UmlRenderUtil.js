@@ -1,6 +1,6 @@
 import TextRenderer from "bpmn-js/lib/draw/TextRenderer";
 import { Shape } from "diagram-js/lib/model";
-import UmlTypes from "../utils/UmlTypes";
+import UmlConnectionType from "./UmlConnectionType";
 
 import {
   getSemantic
@@ -23,7 +23,7 @@ import {
 import {
 	query as domQuery
 } from 'min-dom';
-import MarkerTypes from "./MarkerTypes";
+import MarkerType from "./MarkerType";
 
 /**
  * UML Render Util
@@ -119,10 +119,10 @@ export default class UmlRenderUtil {
 	 * Gets marker url for passed connection type. In case this marker did not exist before, calls _createMarker()
 	 * Adjusted version of marker() from 'bpmn-js/lib/draw/BpmnRenderer.js'
 	 * 
-	 * @param {String} connectionType 
+	 * @param {UmlConnectionType} connectionType 
 	 * @param {String} fillColor 
 	 * @param {String} strokeColor 
-	 * @param {String} markerType 
+	 * @param {MarkerType} markerType 
 	 * 
 	 * @returns {String} markerUrl
 	 */
@@ -141,14 +141,15 @@ export default class UmlRenderUtil {
 	 * Adjusted version of createMarker() from 'bpmn-js/lib/draw/BpmnRenderer.js'
 	 * 
 	 * @param {String} id 
-	 * @param {String} connectionType 
+	 * @param {UmlConnectionType} connectionType 
 	 * @param {String} fillColor 
 	 * @param {String} strokeColor 
-	 * @param {String} markerType
+	 * @param {MarkerType} markerType
 	 */
 	_createMarker(id, connectionType, fillColor, strokeColor, markerType) {
-		if (markerType === MarkerTypes.END) {
-			if (connectionType === UmlTypes.ASSOCIATION || connectionType === UmlTypes.DEPENDENCY) {
+		if (markerType === MarkerType.END) {
+			if (connectionType === UmlConnectionType.ASSOCIATION || connectionType === UmlConnectionType.DEPENDENCY
+				|| connectionType === UmlConnectionType.AGGREGATION || connectionType === UmlConnectionType.COMPOSITION) {
 
 				//same endmarker as bpmn:Association
 				let markerEnd = svgCreate('path');
@@ -164,7 +165,7 @@ export default class UmlRenderUtil {
 					ref: { x: 12, y: 10},
 					scale: 0.5
 				})
-			} else if (connectionType === UmlTypes.EXTENSION || connectionType === UmlTypes.REALIZATION) {
+			} else if (connectionType === UmlConnectionType.EXTENSION || connectionType === UmlConnectionType.REALIZATION) {
 
 				//same endmarker as bpmn:MessageFlow
 				let markerEnd = svgCreate('path');
@@ -179,7 +180,7 @@ export default class UmlRenderUtil {
 					ref: { x: 8.5, y: 5 }
 				});
 			} 
-		} else if (markerType === MarkerTypes.START) {
+		} else if (markerType === MarkerType.START) {
 		
 			//same startmarker as bpmn:ConditionalFlow
 			let markerStart = svgCreate('path');

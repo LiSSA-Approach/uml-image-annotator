@@ -1,7 +1,7 @@
 /* Copied from 'app/custom-modeling-behavior/ResizeBehavior.js and adjusted to UML context */
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
-import UmlTypes from '../../../utils/UmlTypes';
+import UmlNodeType from '../../../utils/UmlNodeType';
 import Settings from '../../../utils/Settings';
 import EventBus from 'diagram-js/lib/core/EventBus';
 
@@ -30,7 +30,7 @@ export default class UmlResizeBehavior {
             var context = event.context,
                 shape = context.shape
             
-            if (is(shape, UmlTypes.LABEL)) {
+            if (is(shape, UmlNodeType.LABEL)) {
                 context.minDimensions = TEXT_LABEL_MIN_DIMENSIONS;
             }
         });

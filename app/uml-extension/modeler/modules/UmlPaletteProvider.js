@@ -3,9 +3,8 @@ import Create from "diagram-js/lib/features/create/Create";
 import ElementFactory from "diagram-js/lib/core/ElementFactory";
 import EventBus from "diagram-js/lib/core/EventBus";
 
-import UmlTypes from "../../utils/UmlTypes";
+import UmlNodeType from "../../utils/UmlNodeType";
 import Settings from "../../utils/Settings";
-import ColorMap from "../../utils/ColorMap";
 
 const UML_NODE_GROUP = 'uml-node';
 
@@ -47,10 +46,10 @@ export default class UmlPaletteProvider {
         let actions = {};
 
         assign(actions, {
-            'create-class': this._createAction(UmlTypes.CLASS, UML_NODE_GROUP, 'uml-icon-class'),
-            'create-interface': this._createAction(UmlTypes.INTERFACE, UML_NODE_GROUP, 'uml-icon-interface'),
-            'create-abstractClass': this._createAction(UmlTypes.ABSTRACT_CLASS, UML_NODE_GROUP, 'uml-icon-abstract'),
-            'create-enumeration': this._createAction(UmlTypes.ENUMERATION, UML_NODE_GROUP, 'uml-icon-enum')
+            'create-class': this._createAction(UmlNodeType.CLASS, UML_NODE_GROUP, 'uml-icon-class'),
+            'create-interface': this._createAction(UmlNodeType.INTERFACE, UML_NODE_GROUP, 'uml-icon-interface'),
+            'create-abstractClass': this._createAction(UmlNodeType.ABSTRACT_CLASS, UML_NODE_GROUP, 'uml-icon-abstract'),
+            'create-enumeration': this._createAction(UmlNodeType.ENUMERATION, UML_NODE_GROUP, 'uml-icon-enum')
         });
 
         return actions;

@@ -3,26 +3,19 @@ import Settings from './Settings';
 const prefix = Settings.uml_prefix;
 
 /**
- * All available UML Class diagram element types
+ * All available UML Class diagram node types
  * Values should be the same as in '../resources/umlModdleExtension.json'
  * 
- * @module UmlTypes
+ * @module UmlNodeType
  */
  let types = {
     NODE: "Node",
-    EDGE: "Edge",
     CLASS_NODE: "ClassNode",
     CLASS: "Class",
     INTERFACE: "Interface",
     ABSTRACT_CLASS: "AbstractClass",
     ENUMERATION: "Enumeration",
-    ASSOCIATION: "Association",
-    LABEL: "Label",
-    EXTENSION: "Extension",
-    REALIZATION: "Realization",
-    DEPENDENCY: "Dependency",
-    AGGREGATION: "Aggregation",
-    COMPOSITION: "Composition"
+    LABEL: "Label"
 };
 
 for (const [key, type] of Object.entries(types)) {

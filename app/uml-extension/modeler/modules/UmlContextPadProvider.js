@@ -16,10 +16,10 @@ import {
     assign
 } from 'min-dash';
 
-import UmlTypes from '../../utils/UmlTypes';
-import LabelTypes from '../../utils/LabelTypes';
+import UmlNodeType from '../../utils/UmlNodeType';
+import UmlConnectionType from "../../utils/UmlConnectionType";
+import LabelType from '../../utils/LabelType';
 import Settings from '../../utils/Settings';
-import ColorMap from "../../utils/ColorMap";
 
 /**
  * UML Context Pad Provider
@@ -99,7 +99,7 @@ export default class UmlContextPadProvider {
             /* called each time a text label action is triggered */
             /* creates label model and view */
             function _createTextLabel(event) {
-                let shape = elementFactory.create('shape', { type: UmlTypes.LABEL });
+                let shape = elementFactory.create('shape', { type: UmlNodeType.LABEL });
 
                 modeling.updateProperties(shape, {
                     belongsTo: element.id,
@@ -151,53 +151,53 @@ export default class UmlContextPadProvider {
         let businessObject = element.businessObject;
 
         //Context Pad Entries that all UML Nodes should have
-        if (isAny(businessObject, [UmlTypes.NODE])) {
+        if (isAny(businessObject, [UmlNodeType.NODE])) {
 
             assign(actions, {
-                'association': _createConnectAction(UmlTypes.ASSOCIATION, 'association',  'bpmn-icon-connection red'),
-                'aggregation': _createConnectAction(UmlTypes.AGGREGATION, 'association', 'bpmn-icon-gateway-none red'),
-                'composition': _createConnectAction(UmlTypes.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
-                'dependency': _createConnectAction(UmlTypes.DEPENDENCY, 'otherEdge', 'bpmn-icon-default-flow blue')
+                'association': _createConnectAction(UmlConnectionType.ASSOCIATION, 'association',  'bpmn-icon-connection red'),
+                'aggregation': _createConnectAction(UmlConnectionType.AGGREGATION, 'association', 'bpmn-icon-gateway-none red'),
+                'composition': _createConnectAction(UmlConnectionType.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
+                'dependency': _createConnectAction(UmlConnectionType.DEPENDENCY, 'otherEdge', 'bpmn-icon-default-flow blue')
             });
         }
 
         //Context Pad Entries that all UML Edges should have
-        if (isAny(businessObject, [UmlTypes.EDGE])) {
+        if (isAny(businessObject, [UmlConnectionType.EDGE])) {
 
             assign(actions, {
-                'addLabeling': _createLabelAction(LabelTypes.EDGE_LABELING)
+                'addLabeling': _createLabelAction(LabelType.EDGE_LABELING)
             });
         }
 
         //additional Context Pad Entries of UML Class Nodes (Class, Abstract, Interface) should have
-        if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
+        if (isAny(businessObject, [UmlNodeType.CLASS_NODE])) {
 
             assign(actions, {
-                'extension': _createConnectAction(UmlTypes.EXTENSION, 'otherEdge', 'bpmn-icon-connection-multi blue'),
-                'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
-                'addAttribute': _createLabelAction(LabelTypes.ATTRIBUTE),
-                'addMethod': _createLabelAction(LabelTypes.METHOD)
+                'extension': _createConnectAction(UmlConnectionType.EXTENSION, 'otherEdge', 'bpmn-icon-connection-multi blue'),
+                'addClassName': _createLabelAction(LabelType.CLASS_NAME),
+                'addAttribute': _createLabelAction(LabelType.ATTRIBUTE),
+                'addMethod': _createLabelAction(LabelType.METHOD)
             });
         }
 
         //additional Context Pad Entries of UML Class and UML Abstract Class
-        if (isAny(businessObject, [UmlTypes.CLASS, UmlTypes.ABSTRACT_CLASS])) {
+        if (isAny(businessObject, [UmlNodeType.CLASS, UmlNodeType.ABSTRACT_CLASS])) {
             assign(actions, {
-                'realization': _createConnectAction(UmlTypes.REALIZATION, 'otherEdge', 'bpmn-icon-connection-multi green')
+                'realization': _createConnectAction(UmlConnectionType.REALIZATION, 'otherEdge', 'bpmn-icon-connection-multi green')
             })
         }
 
         //additional Context Pad Entries of UML Enumeration
-        if (isAny(businessObject, [UmlTypes.ENUMERATION])) {
+        if (isAny(businessObject, [UmlNodeType.ENUMERATION])) {
 
             assign(actions, {
-                'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
-                'addEnumValue': _createLabelAction(LabelTypes.ENUM_VALUE)
+                'addClassName': _createLabelAction(LabelType.CLASS_NAME),
+                'addEnumValue': _createLabelAction(LabelType.ENUM_VALUE)
             });
         }
 
         //additional Context Pad Entries of UML Association (also includes Aggregation and Composition)
-        if (isAny(businessObject, [UmlTypes.ASSOCIATION])) {
+        if (isAny(businessObject, [UmlConnectionType.ASSOCIATION])) {
 
             assign(actions, {
                 'changeDirected': {
@@ -209,8 +209,8 @@ export default class UmlContextPadProvider {
                         dragstart: _changeDirected
                     }
                 },
-                'addSourceMultiplicity': _createLabelAction(LabelTypes.SOURCE_MULT),
-                'addTargetMultiplicity': _createLabelAction(LabelTypes.TARGET_MULT)
+                'addSourceMultiplicity': _createLabelAction(LabelType.SOURCE_MULT),
+                'addTargetMultiplicity': _createLabelAction(LabelType.TARGET_MULT)
             });
         }
         

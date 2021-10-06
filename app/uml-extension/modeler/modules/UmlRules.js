@@ -2,7 +2,8 @@ import EventBus from "diagram-js/lib/core/EventBus";
 import RuleProvider from 'diagram-js/lib/features/rules/RuleProvider';
 import { Root, Shape } from 'diagram-js/lib/model';
 import Settings from '../../utils/Settings';
-import UmlTypes from '../../utils/UmlTypes';
+import UmlNodeType from '../../utils/UmlNodeType';
+import UmlConnectionType from "../../utils/UmlConnectionType";
 import BpmnRules from 'bpmn-js/lib/features/rules/BpmnRules';
 
 import {
@@ -14,7 +15,7 @@ import {
 const PRIORITY = Settings.uml_priority;
 
 /* Default connection type. Will be changed via ContextPad during annotation */
-var currentConnectionType = UmlTypes.ASSOCIATION;
+var currentConnectionType = UmlConnectionType.ASSOCIATION;
 
 /**
  * UML Rules
@@ -60,34 +61,34 @@ export default class UmlRules extends RuleProvider {
         if (sourceType.startsWith(Settings.uml_prefix) && targetType.startsWith(Settings.uml_prefix)) {
 
             //extension connection rules
-            if (currentConnectionType === UmlTypes.EXTENSION) {
+            if (currentConnectionType === UmlConnectionType.EXTENSION) {
 
                 //no object can extend itself
                 if (source === target) {
                     return false;
 
                 //interfaces shouldn't extend anything other than interfaces
-                } else if ((sourceType === UmlTypes.INTERFACE) && !(targetType === UmlTypes.INTERFACE)) {
+                } else if ((sourceType === UmlNodeType.INTERFACE) && !(targetType === UmlNodeType.INTERFACE)) {
                     return false;
 
                 //classes or abstract classes shouldn't extend an interface. Use realization instead
-                } else if ((sourceType === UmlTypes.CLASS || sourceType === UmlTypes.ABSTRACT_CLASS) && targetType === UmlTypes.INTERFACE) {
-                    currentConnectionType = UmlTypes.REALIZATION;
+                } else if ((sourceType === UmlNodeType.CLASS || sourceType === UmlNodeType.ABSTRACT_CLASS) && targetType === UmlNodeType.INTERFACE) {
+                    currentConnectionType = UmlConnectionType.REALIZATION;
 
                 //enumerations can't extend and cannot be extended
-                } else if ((sourceType === UmlTypes.ENUMERATION) || (targetType === UmlTypes.ENUMERATION)) {
+                } else if ((sourceType === UmlNodeType.ENUMERATION) || (targetType === UmlNodeType.ENUMERATION)) {
                     return false;
                 }
             
             //realization connection rules
-            } else if (currentConnectionType === UmlTypes.REALIZATION) {
+            } else if (currentConnectionType === UmlConnectionType.REALIZATION) {
                 
                 //you can only realize an interface
-                if (!(targetType === UmlTypes.INTERFACE)) {
+                if (!(targetType === UmlNodeType.INTERFACE)) {
                     return false;
                 
                 //enumerations can't realize 
-                } else if (sourceType === UmlTypes.ENUMERATION) {
+                } else if (sourceType === UmlNodeType.ENUMERATION) {
                     return false;
                 }
             }
@@ -109,7 +110,7 @@ export default class UmlRules extends RuleProvider {
     canCreate(shape, target) {
 
         // it should be possible to place text labels above all other elements
-        if (is(shape, UmlTypes.LABEL)) {
+        if (is(shape, UmlNodeType.LABEL)) {
             return true;
         }
 

@@ -2,11 +2,12 @@ import EventBus from "diagram-js/lib/core/EventBus";
 import TextRenderer from "bpmn-js/lib/draw/TextRenderer";
 
 import BaseRenderer from 'diagram-js/lib/draw/BaseRenderer';
-import UmlTypes from '../../utils/UmlTypes';
+import UmlNodeType from '../../utils/UmlNodeType';
+import UmlConnectionType from "../../utils/UmlConnectionType";
 import UmlRenderUtil from '../../utils/UmlRenderUtil';
 import Settings from '../../utils/Settings';
 import ColorMap from '../../utils/ColorMap';
-import MarkerTypes from "../../utils/MarkerTypes";
+import MarkerType from "../../utils/MarkerType";
 
 import {
     getRectPath
@@ -67,11 +68,11 @@ export default class UmlRenderer extends BaseRenderer {
      */
     drawShape(parent, shape) {
 
-        if (isAny(shape, [UmlTypes.NODE])) {
+        if (isAny(shape, [UmlNodeType.NODE])) {
             let type = shape.type;
             let colorObject = ColorMap.get(type);
             return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
-        } else if (isAny(shape, [UmlTypes.LABEL])) {
+        } else if (isAny(shape, [UmlNodeType.LABEL])) {
             return this.renderUtil.drawTextLabel(parent, shape);
         }
 
@@ -85,7 +86,7 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {String} svg path
      */
     getShapePath(shape) {
-        if (isAny(shape, [UmlTypes.CLASS_NODE, UmlTypes.ENUMERATION])) {
+        if (isAny(shape, [UmlNodeType.CLASS_NODE, UmlNodeType.ENUMERATION])) {
             return getRectPath(shape);
         }
     }
@@ -104,25 +105,25 @@ export default class UmlRenderer extends BaseRenderer {
         let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
 
         //for these types of connections, we need an marker end 
-        if (isAny(connection, [UmlTypes.EXTENSION, UmlTypes.REALIZATION, UmlTypes.DEPENDENCY]) 
-            || (isAny(connection, [UmlTypes.ASSOCIATION]) && connection.businessObject.directed)) {
+        if (isAny(connection, [UmlConnectionType.EXTENSION, UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY]) 
+            || (isAny(connection, [UmlConnectionType.ASSOCIATION]) && connection.businessObject.directed)) {
 
-            attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, colorObject.colorCode, MarkerTypes.END);
+            attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, colorObject.colorCode, MarkerType.END);
         }
 
         //for these types of connections, we need an marker start
-        if (isAny(connection, [UmlTypes.AGGREGATION, UmlTypes.COMPOSITION])) {
+        if (isAny(connection, [UmlConnectionType.AGGREGATION, UmlConnectionType.COMPOSITION])) {
             let fillColor = NO_FILLCOLOR;
 
-            if (connection.type === UmlTypes.COMPOSITION) {
+            if (connection.type === UmlConnectionType.COMPOSITION) {
                 fillColor = colorObject.colorCode;
             }
 
-            attrs.markerStart = this.renderUtil.marker(connectionType, fillColor, colorObject.colorCode, MarkerTypes.START);
+            attrs.markerStart = this.renderUtil.marker(connectionType, fillColor, colorObject.colorCode, MarkerType.START);
         }
 
         //for these types of connections, we need dotted lines
-        if (isAny(connection, [UmlTypes.REALIZATION, UmlTypes.DEPENDENCY])) {
+        if (isAny(connection, [UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY])) {
             attrs.strokeDasharray = STROKE_DASHARRAY;
             attrs.strokeLinecap = STROKE_SHAPE;
             attrs.strokeLinejoin = STROKE_SHAPE;
