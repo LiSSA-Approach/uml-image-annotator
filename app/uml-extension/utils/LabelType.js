@@ -8,7 +8,6 @@
     CLASS_NAME: "className",
     ATTRIBUTE: "attribute",
     METHOD: "method",
-    EDGE_LABELING: "edgeLabeling",
     SOURCE_MULT: "sourceMultiplicity",
     TARGET_MULT: "targetMultiplicity",
     ENUM_VALUE: "enumValue"

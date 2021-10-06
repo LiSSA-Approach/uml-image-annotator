@@ -161,14 +161,6 @@ export default class UmlContextPadProvider {
             });
         }
 
-        //Context Pad Entries that all UML Edges should have
-        if (isAny(businessObject, [UmlConnectionType.EDGE])) {
-
-            assign(actions, {
-                'addLabeling': _createLabelAction(LabelType.EDGE_LABELING)
-            });
-        }
-
         //additional Context Pad Entries of UML Class Nodes (Class, Abstract, Interface) should have
         if (isAny(businessObject, [UmlNodeType.CLASS_NODE])) {
 
