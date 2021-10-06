@@ -13,7 +13,7 @@ import {
 /* This Rules should be called before standard BpmnRules */
 const PRIORITY = Settings.uml_priority;
 
-/* Default connection type. Can be changed via Palette */
+/* Default connection type. Will be changed via ContextPad during annotation */
 var currentConnectionType = UmlTypes.ASSOCIATION;
 
 /**

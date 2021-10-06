@@ -125,6 +125,18 @@
           "superClass": [
             "uml:Edge"
           ]
+        },
+        {
+          "name": "Aggregation",
+          "superClass": [
+            "uml:Association"
+          ]
+        },
+        {
+          "name": "Composition",
+          "superClass": [
+            "uml:Association"
+          ]
         }
     ]
 }

@@ -66,7 +66,10 @@ export default class UmlContextPadProvider {
         /**************************************************/
         /************ EVENT HANDLER FUNCTIONS *************/
         /**************************************************/
-        
+
+        /* The following event handler functions need to be inside of getContextPadEntries 
+           Otherwise, they could be undefined in some cases */
+
         //creates action for passed connection type
         function _createConnectAction(connectionType) {
         
@@ -146,16 +149,18 @@ export default class UmlContextPadProvider {
 
         let businessObject = element.businessObject;
 
-        //every UML node can use association and dependency
+        //Context Pad Entries that all UML Nodes should have
         if (isAny(businessObject, [UmlTypes.NODE])) {
 
             assign(actions, {
                 'association': _createConnectAction(UmlTypes.ASSOCIATION),
+                'aggregation': _createConnectAction(UmlTypes.AGGREGATION),
+                'composition': _createConnectAction(UmlTypes.COMPOSITION),
                 'dependency': _createConnectAction(UmlTypes.DEPENDENCY)
             });
         }
 
-        //edges can have an edge labeling
+        //Context Pad Entries that all UML Edges should have
         if (isAny(businessObject, [UmlTypes.EDGE])) {
 
             assign(actions, {
@@ -163,7 +168,7 @@ export default class UmlContextPadProvider {
             });
         }
 
-        //class nodes (class, abstract, interface) can use extensions and could have class names, attributes and methods
+        //additional Context Pad Entries of UML Class Nodes (Class, Abstract, Interface) should have
         if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
 
             assign(actions, {
@@ -174,14 +179,14 @@ export default class UmlContextPadProvider {
             });
         }
 
-        //classes and abstract classes can use realization
+        //additional Context Pad Entries of UML Class and UML Abstract Class
         if (isAny(businessObject, [UmlTypes.CLASS, UmlTypes.ABSTRACT_CLASS])) {
             assign(actions, {
                 'realization': _createConnectAction(UmlTypes.REALIZATION)
             })
         }
 
-        //enums have a name and enum values
+        //additional Context Pad Entries of UML Enumeration
         if (isAny(businessObject, [UmlTypes.ENUMERATION])) {
 
             assign(actions, {
@@ -190,7 +195,7 @@ export default class UmlContextPadProvider {
             });
         }
 
-        //associations can be changed to directed or undirected and could have src and target multiplicity
+        //additional Context Pad Entries of UML Association (also includes Aggregation and Composition)
         if (isAny(businessObject, [UmlTypes.ASSOCIATION])) {
 
             assign(actions, {

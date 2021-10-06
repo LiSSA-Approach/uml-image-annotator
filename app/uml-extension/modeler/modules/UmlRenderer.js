@@ -6,6 +6,7 @@ import UmlTypes from '../../utils/UmlTypes';
 import UmlRenderUtil from '../../utils/UmlRenderUtil';
 import Settings from '../../utils/Settings';
 import ColorMap from '../../utils/ColorMap';
+import MarkerTypes from "../../utils/MarkerTypes";
 
 import {
     getRectPath
@@ -66,7 +67,7 @@ export default class UmlRenderer extends BaseRenderer {
      */
     drawShape(parent, shape) {
 
-        if (isAny(shape, [UmlTypes.CLASS_NODE, UmlTypes.ENUMERATION])) {
+        if (isAny(shape, [UmlTypes.NODE])) {
             let type = shape.type;
             let colorObject = ColorMap.get(type);
             return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
@@ -98,15 +99,26 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {Snap.svg} returns a Snap.svg paper element
      */
     drawConnection(parent, connection) {
-        let type = connection.type;
-        let colorObject = ColorMap.get(type);
+        let connectionType = connection.type;
+        let colorObject = ColorMap.get(connectionType);
         let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
 
-        //for these types of connections, we need an arrow head
+        //for these types of connections, we need an marker end 
         if (isAny(connection, [UmlTypes.EXTENSION, UmlTypes.REALIZATION, UmlTypes.DEPENDENCY]) 
-            || (connection.type === UmlTypes.ASSOCIATION && connection.businessObject.directed)) {
+            || (isAny(connection, [UmlTypes.ASSOCIATION]) && connection.businessObject.directed)) {
 
-            attrs.markerEnd = this.renderUtil.marker(type, NO_FILLCOLOR, colorObject.colorCode)
+            attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, colorObject.colorCode, MarkerTypes.END);
+        }
+
+        //for these types of connections, we need an marker start
+        if (isAny(connection, [UmlTypes.AGGREGATION, UmlTypes.COMPOSITION])) {
+            let fillColor = NO_FILLCOLOR;
+
+            if (connection.type === UmlTypes.COMPOSITION) {
+                fillColor = colorObject.colorCode;
+            }
+
+            attrs.markerStart = this.renderUtil.marker(connectionType, fillColor, colorObject.colorCode, MarkerTypes.START);
         }
 
         //for these types of connections, we need dotted lines

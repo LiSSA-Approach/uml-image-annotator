@@ -23,6 +23,7 @@ import {
 import {
 	query as domQuery
 } from 'min-dom';
+import MarkerTypes from "./MarkerTypes";
 
 /**
  * UML Render Util
@@ -121,14 +122,15 @@ export default class UmlRenderUtil {
 	 * @param {String} connectionType 
 	 * @param {String} fillColor 
 	 * @param {String} strokeColor 
+	 * @param {String} markerType 
 	 * 
 	 * @returns {String} markerUrl
 	 */
-	marker(connectionType, fillColor, strokeColor) {
-		let markerId = connectionType + '-' + fillColor + '-' + strokeColor;
+	marker(connectionType, fillColor, strokeColor, markerType) {
+		let markerId = connectionType + '-' + fillColor + '-' + strokeColor + '-' + markerType;
 
 		if (!this.markers[markerId]) {
-			this._createMarker(markerId, connectionType, fillColor, strokeColor);
+			this._createMarker(markerId, connectionType, fillColor, strokeColor, markerType);
 		}
 
 		return 'url(#' + markerId + ')';
@@ -142,37 +144,54 @@ export default class UmlRenderUtil {
 	 * @param {String} connectionType 
 	 * @param {String} fillColor 
 	 * @param {String} strokeColor 
+	 * @param {String} markerType
 	 */
-	_createMarker(id, connectionType, fillColor, strokeColor) {
-		if (connectionType === UmlTypes.ASSOCIATION || connectionType === UmlTypes.DEPENDENCY) {
+	_createMarker(id, connectionType, fillColor, strokeColor, markerType) {
+		if (markerType === MarkerTypes.END) {
+			if (connectionType === UmlTypes.ASSOCIATION || connectionType === UmlTypes.DEPENDENCY) {
 
-			//same endmarker as bpmn:Association
-			let arrowHead = svgCreate('path');
-			svgAttr(arrowHead, { d: 'M 1 5 L 11 10 L 1 15' });
+				//same endmarker as bpmn:Association
+				let markerEnd = svgCreate('path');
+				svgAttr(markerEnd, { d: 'M 1 5 L 11 10 L 1 15' });
 
+				this._addMarker(id, {
+					element: markerEnd,
+					attrs: {
+						fill: fillColor,
+						stroke: strokeColor,
+						strokeWidth: 1.5
+					},
+					ref: { x: 12, y: 10},
+					scale: 0.5
+				})
+			} else if (connectionType === UmlTypes.EXTENSION || connectionType === UmlTypes.REALIZATION) {
+
+				//same endmarker as bpmn:MessageFlow
+				let markerEnd = svgCreate('path');
+				svgAttr(markerEnd, { d: 'm 1 5 l 0 -3 l 7 3 l -7 3 z' });
+		
+				this._addMarker(id, {
+					element: markerEnd,
+					attrs: {
+						fill: fillColor,
+						stroke: strokeColor
+					},
+					ref: { x: 8.5, y: 5 }
+				});
+			} 
+		} else if (markerType === MarkerTypes.START) {
+		
+			//same startmarker as bpmn:ConditionalFlow
+			let markerStart = svgCreate('path');
+			svgAttr(markerStart, { d: 'M 0 10 L 8 6 L 16 10 L 8 14 Z' }); 
+	
 			this._addMarker(id, {
-				element: arrowHead,
-				attrs: {
-					fill: fillColor,
-					stroke: strokeColor,
-					strokeWidth: 1.5
-				},
-				ref: { x: 12, y: 10},
-				scale: 0.5
-			})
-		} else if (connectionType === UmlTypes.EXTENSION || connectionType === UmlTypes.REALIZATION) {
-
-			//same endmarker as bpmn:MessageFlow
-			let arrowHead = svgCreate('path');
-			svgAttr(arrowHead, { d: 'm 1 5 l 0 -3 l 7 3 l -7 3 z' });
-	  
-			this._addMarker(id, {
-			  	element: arrowHead,
+			  	element: markerStart,
 			  	attrs: {
 					fill: fillColor,
 					stroke: strokeColor
 			  	},
-			  	ref: { x: 8.5, y: 5 }
+			  	ref: { x: -1, y: 10 }
 			});
 		}
 	}

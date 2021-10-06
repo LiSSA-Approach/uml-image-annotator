@@ -20,7 +20,9 @@ const prefix = Settings.uml_prefix;
     LABEL: "Label",
     EXTENSION: "Extension",
     REALIZATION: "Realization",
-    DEPENDENCY: "Dependency"
+    DEPENDENCY: "Dependency",
+    AGGREGATION: "Aggregation",
+    COMPOSITION: "Composition"
 };
 
 for (const [key, type] of Object.entries(types)) {
