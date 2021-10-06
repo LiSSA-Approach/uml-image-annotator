@@ -10,7 +10,7 @@ import OriginModule from 'diagram-js-origin';
 /* UML annotator imports (added with UML extension) */
 import Settings from './uml-extension/utils/Settings.js';
 import Mode from './uml-extension/utils/Mode.js'
-import UmlModeler from './uml-extension/modeler';
+import UmlModeler from './uml-extension/modeler/UmlModeler';
 import umlDiagramXML from './uml-extension/resources/defaultUML.bpmn';
 import umlModdleExtension from './uml-extension/resources/umlModdleExtension.json';
 
