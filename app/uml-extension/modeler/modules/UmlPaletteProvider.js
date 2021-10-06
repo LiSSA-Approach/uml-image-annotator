@@ -47,10 +47,10 @@ export default class UmlPaletteProvider {
         let actions = {};
 
         assign(actions, {
-            'create-class': this._createAction(UmlTypes.CLASS, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.CLASS).colorName),
-            'create-interface': this._createAction(UmlTypes.INTERFACE, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.INTERFACE).colorName),
-            'create-abstractClass': this._createAction(UmlTypes.ABSTRACT_CLASS, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.ABSTRACT_CLASS).colorName),
-            'create-enumeration': this._createAction(UmlTypes.ENUMERATION, UML_NODE_GROUP, 'bpmn-icon-lane ' + ColorMap.get(UmlTypes.ENUMERATION).colorName)
+            'create-class': this._createAction(UmlTypes.CLASS, UML_NODE_GROUP, 'uml-icon-class'),
+            'create-interface': this._createAction(UmlTypes.INTERFACE, UML_NODE_GROUP, 'uml-icon-interface'),
+            'create-abstractClass': this._createAction(UmlTypes.ABSTRACT_CLASS, UML_NODE_GROUP, 'uml-icon-abstract'),
+            'create-enumeration': this._createAction(UmlTypes.ENUMERATION, UML_NODE_GROUP, 'uml-icon-enum')
         });
 
         return actions;
