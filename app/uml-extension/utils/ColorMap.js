@@ -14,7 +14,7 @@ const colorMap = new Map([
     [UmlTypes.AGGREGATION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlTypes.COMPOSITION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlTypes.EXTENSION, { colorName: 'blue', colorCode: '#0000FF'}],
-    [UmlTypes.REALIZATION, { colorName: 'blue', colorCode: '#0000FF'}],
+    [UmlTypes.REALIZATION, { colorName: 'green', colorCode: '#008000'}],
     [UmlTypes.DEPENDENCY, { colorName: 'blue', colorCode: '#0000FF'}]
 ]);
 

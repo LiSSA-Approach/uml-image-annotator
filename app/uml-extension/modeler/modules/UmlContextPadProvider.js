@@ -19,6 +19,7 @@ import {
 import UmlTypes from '../../utils/UmlTypes';
 import LabelTypes from '../../utils/LabelTypes';
 import Settings from '../../utils/Settings';
+import ColorMap from "../../utils/ColorMap";
 
 /**
  * UML Context Pad Provider
@@ -71,7 +72,7 @@ export default class UmlContextPadProvider {
            Otherwise, they could be undefined in some cases */
 
         //creates action for passed connection type
-        function _createConnectAction(connectionType) {
+        function _createConnectAction(connectionType, group, iconClassName) {
         
             function _startConnect(event, element, autoActivate) {
                 //tell UmlRules that the connection type should change
@@ -82,8 +83,8 @@ export default class UmlContextPadProvider {
             }
 
             return {
-                group: "connect",
-                className: 'bpmn-icon-connection-multi',
+                group: group,
+                className: iconClassName,
                 title: 'Connect using ' + connectionType.replace(Settings.uml_prefix, 'UML '),
                 action: {
                     click: _startConnect,
@@ -153,10 +154,10 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlTypes.NODE])) {
 
             assign(actions, {
-                'association': _createConnectAction(UmlTypes.ASSOCIATION),
-                'aggregation': _createConnectAction(UmlTypes.AGGREGATION),
-                'composition': _createConnectAction(UmlTypes.COMPOSITION),
-                'dependency': _createConnectAction(UmlTypes.DEPENDENCY)
+                'association': _createConnectAction(UmlTypes.ASSOCIATION, 'association',  'bpmn-icon-connection red'),
+                'aggregation': _createConnectAction(UmlTypes.AGGREGATION, 'association', 'bpmn-icon-gateway-none red'),
+                'composition': _createConnectAction(UmlTypes.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
+                'dependency': _createConnectAction(UmlTypes.DEPENDENCY, 'otherEdge', 'bpmn-icon-default-flow blue')
             });
         }
 
@@ -172,7 +173,7 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlTypes.CLASS_NODE])) {
 
             assign(actions, {
-                'extension': _createConnectAction(UmlTypes.EXTENSION),
+                'extension': _createConnectAction(UmlTypes.EXTENSION, 'otherEdge', 'bpmn-icon-connection-multi blue'),
                 'addClassName': _createLabelAction(LabelTypes.CLASS_NAME),
                 'addAttribute': _createLabelAction(LabelTypes.ATTRIBUTE),
                 'addMethod': _createLabelAction(LabelTypes.METHOD)
@@ -182,7 +183,7 @@ export default class UmlContextPadProvider {
         //additional Context Pad Entries of UML Class and UML Abstract Class
         if (isAny(businessObject, [UmlTypes.CLASS, UmlTypes.ABSTRACT_CLASS])) {
             assign(actions, {
-                'realization': _createConnectAction(UmlTypes.REALIZATION)
+                'realization': _createConnectAction(UmlTypes.REALIZATION, 'otherEdge', 'bpmn-icon-connection-multi green')
             })
         }
 
@@ -201,7 +202,7 @@ export default class UmlContextPadProvider {
             assign(actions, {
                 'changeDirected': {
                     group: 'changeDirected',
-                    className: 'bpmn-icon-connection-multi',
+                    className: 'bpmn-icon-end-event-signal',
                     title: 'Change connection to directed or undirected',
                     action: {
                         click: _changeDirected,
