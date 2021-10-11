@@ -3,16 +3,16 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.omg.org/spec/UML/20161101" targetNamespace="" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
   <process id="Process_1gpwvpe">
     <uml:Class id="Class_09fpan1">
-      <outgoing>Flow_08wvf5f</outgoing>
+      <outgoing>Association_08wvf5f_08wvf5f</outgoing>
     </uml:Class>
     <uml:Class id="Class_1sfm2u0">
-      <incoming>Flow_08wvf5f</incoming>
+      <incoming>Association_08wvf5f_08wvf5f</incoming>
     </uml:Class>
-    <uml:Association id="Flow_08wvf5f" sourceRef="Class_09fpan1" targetRef="Class_1sfm2u0" directed="true"/>
+    <uml:Association id="Association_08wvf5f" sourceRef="Class_09fpan1" targetRef="Class_1sfm2u0" directed="true"/>
   </process>
   <bpmndi:BPMNDiagram id="sid-74620812-92c4-44e5-949c-aa47393d3830">
     <bpmndi:BPMNPlane id="sid-cdcae759-2af7-4a6d-bd02-53f3352a731d" bpmnElement="Process_1gpwvpe">
-      <bpmndi:BPMNEdge id="Flow_08wvf5f_di" bpmnElement="Flow_08wvf5f">
+      <bpmndi:BPMNEdge id="Association_08wvf5f_di" bpmnElement="Association_08wvf5f">
         <omgdi:waypoint x="210" y="80" />
         <omgdi:waypoint x="390" y="80" />
       </bpmndi:BPMNEdge>

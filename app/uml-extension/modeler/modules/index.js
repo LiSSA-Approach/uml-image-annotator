@@ -23,6 +23,12 @@ import UmlRenderer from './UmlRenderer';
 import UmlRules from './UmlRules';
 
 /**
+ * Custom UML Factory
+ * Overwrites BpmnFactory and defines how some UML elements are stored differently from BPMN elements
+ */
+ import UmlFactory from './UmlFactory';
+
+/**
  * BehaviorModule that includes an adjusted ResizeBehavior for UML Text Labels
  * Decreases Min Size of Labels to a minimum to refine the annotation
  * This module is copied from 'app/custom-modeling-behavior' and adjusted to UML context
@@ -42,5 +48,6 @@ export default {
   contextPadProvider: [ 'type', UmlContextPadProvider ],
   umlRenderer: [ 'type', UmlRenderer ],
   umlRules: [ 'type', UmlRules ],
-  paletteProvider: [ 'type', UmlPaletteProvider ]
+  paletteProvider: [ 'type', UmlPaletteProvider ],
+  bpmnFactory: [ 'type', UmlFactory ]
 };
