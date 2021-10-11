@@ -152,10 +152,7 @@ export default class UmlRules extends RuleProvider {
         
         //all UML elements should be resizable
         this.addRule('shape.resize', PRIORITY, function(context) {
-            let shape = context.shape,
-                type = shape.type;
-        
-            return type.startsWith(Settings.uml_prefix);
+            return true;
         });
         
         //determines if connecting source and target is possible and returns correct connection type
