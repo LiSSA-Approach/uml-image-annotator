@@ -1,6 +1,6 @@
 import EventBus from "diagram-js/lib/core/EventBus";
 import RuleProvider from 'diagram-js/lib/features/rules/RuleProvider';
-import { Root, Shape } from 'diagram-js/lib/model';
+import { Label, Root, Shape } from 'diagram-js/lib/model';
 import Settings from '../../utils/Settings';
 import UmlNodeType from '../../utils/UmlNodeType';
 import UmlConnectionType from "../../utils/UmlConnectionType";
@@ -150,9 +150,12 @@ export default class UmlRules extends RuleProvider {
             return canCreate(shape, target);
         });
         
-        //all UML elements should be resizable
+        //all UML nodes and labels should be resizable
         this.addRule('shape.resize', PRIORITY, function(context) {
-            return true;
+            let shape = context.shape;
+
+            //true for a any Connection results in nothing other than an error message
+            return (shape instanceof Shape || shape instanceof Label);
         });
         
         //determines if connecting source and target is possible and returns correct connection type
