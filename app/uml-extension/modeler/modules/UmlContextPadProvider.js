@@ -102,7 +102,7 @@ export default class UmlContextPadProvider {
                 let shape = elementFactory.create('shape', { type: UmlNodeType.LABEL });
 
                 modeling.updateProperties(shape, {
-                    belongsTo: element.id,
+                    text_belongs_to: element.id,
                     labelType: labelType
                 });
                 create.start(event, shape);

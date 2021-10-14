@@ -32,7 +32,7 @@
           ],
           "properties": [
             {
-              "name": "belongsTo",
+              "name": "text_belongs_to",
               "type": "String",
               "isRef": true,
               "isAttr": true
