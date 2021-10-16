@@ -11,6 +11,7 @@ export default new Map([
     [UmlNodeType.INTERFACE, { colorName: 'green', colorCode: '#008000' }],
     [UmlNodeType.ABSTRACT_CLASS, { colorName: 'blue', colorCode: '#0000FF'}],
     [UmlNodeType.ENUMERATION, { colorName: 'orange', colorCode: '#FF8C00'}],
+    [UmlNodeType.N_ARY_ASSO_DIA, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlConnectionType.ASSOCIATION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlConnectionType.AGGREGATION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlConnectionType.COMPOSITION, { colorName: 'red', colorCode: '#cc0000' }],

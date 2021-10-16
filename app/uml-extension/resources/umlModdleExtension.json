@@ -88,9 +88,15 @@
         {
             "name": "Enumeration",
             "superClass": [
-              "uml:Node"
+              "uml:ClassNode"
             ]
         },
+        {
+          "name": "NAryAssociationDiamond",
+          "superClass": [
+            "uml:Node"
+          ]
+      },
         {
             "name": "Association",
             "superClass": [

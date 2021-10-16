@@ -7,6 +7,7 @@ import UmlNodeType from "../../utils/UmlNodeType";
 import Settings from "../../utils/Settings";
 
 const UML_NODE_GROUP = 'uml-node';
+const OTHER_GROUP = 'other';
 
 import {
     assign
@@ -49,7 +50,8 @@ export default class UmlPaletteProvider {
             'create-class': this._createAction(UmlNodeType.CLASS, UML_NODE_GROUP, 'uml-icon-class'),
             'create-interface': this._createAction(UmlNodeType.INTERFACE, UML_NODE_GROUP, 'uml-icon-interface'),
             'create-abstractClass': this._createAction(UmlNodeType.ABSTRACT_CLASS, UML_NODE_GROUP, 'uml-icon-abstract'),
-            'create-enumeration': this._createAction(UmlNodeType.ENUMERATION, UML_NODE_GROUP, 'uml-icon-enum')
+            'create-enumeration': this._createAction(UmlNodeType.ENUMERATION, UML_NODE_GROUP, 'uml-icon-enum'),
+            'create-n-ary-asso-dia': this._createAction(UmlNodeType.N_ARY_ASSO_DIA, OTHER_GROUP, 'bpmn-icon-gateway-none red'),
         });
 
         return actions;

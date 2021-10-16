@@ -154,26 +154,35 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlNodeType.NODE])) {
 
             assign(actions, {
-                'association': _createConnectAction(UmlConnectionType.ASSOCIATION, 'association',  'bpmn-icon-connection red'),
-                'aggregation': _createConnectAction(UmlConnectionType.AGGREGATION, 'association', 'bpmn-icon-gateway-none red'),
-                'composition': _createConnectAction(UmlConnectionType.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
-                'dependency': _createConnectAction(UmlConnectionType.DEPENDENCY, 'otherEdge', 'bpmn-icon-default-flow blue')
+                'association': _createConnectAction(UmlConnectionType.ASSOCIATION, 'association',  'bpmn-icon-connection red')
             });
         }
 
-        //additional Context Pad Entries of UML Class Nodes (Class, Abstract, Interface) should have
+        //additional Context Pad Entries of UML Class Nodes (Class, Abstract, Enum, Interface) 
         if (isAny(businessObject, [UmlNodeType.CLASS_NODE])) {
 
             assign(actions, {
+                'aggregation': _createConnectAction(UmlConnectionType.AGGREGATION, 'association', 'bpmn-icon-gateway-none red'),
+                'composition': _createConnectAction(UmlConnectionType.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
+                'dependency': _createConnectAction(UmlConnectionType.DEPENDENCY, 'otherEdge', 'bpmn-icon-default-flow blue'),
                 'extension': _createConnectAction(UmlConnectionType.EXTENSION, 'otherEdge', 'bpmn-icon-connection-multi blue'),
-                'addClassName': _createLabelAction(LabelType.CLASS_NAME),
+                'addClassName': _createLabelAction(LabelType.CLASS_NAME)
+            });
+        }
+
+
+        //additional Context Pad Entries of UML Class, UML Abstract Class and UML Interface
+        if (isAny(businessObject, [UmlNodeType.CLASS, UmlNodeType.ABSTRACT_CLASS, UmlNodeType.INTERFACE])) {
+
+            assign(actions, {
                 'addAttribute': _createLabelAction(LabelType.ATTRIBUTE),
                 'addMethod': _createLabelAction(LabelType.METHOD)
-            });
+            })
         }
 
         //additional Context Pad Entries of UML Class and UML Abstract Class
         if (isAny(businessObject, [UmlNodeType.CLASS, UmlNodeType.ABSTRACT_CLASS])) {
+
             assign(actions, {
                 'realization': _createConnectAction(UmlConnectionType.REALIZATION, 'otherEdge', 'bpmn-icon-connection-multi green')
             })
@@ -183,7 +192,6 @@ export default class UmlContextPadProvider {
         if (isAny(businessObject, [UmlNodeType.ENUMERATION])) {
 
             assign(actions, {
-                'addClassName': _createLabelAction(LabelType.CLASS_NAME),
                 'addEnumValue': _createLabelAction(LabelType.ENUM_VALUE)
             });
         }

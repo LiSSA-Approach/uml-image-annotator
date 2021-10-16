@@ -91,7 +91,17 @@ export default class UmlRules extends RuleProvider {
                 } else if (sourceType === UmlNodeType.ENUMERATION) {
                     return false;
                 }
+            } 
+            
+            //n-ary association diamonds can only be connected with associations, aggregations and compositions
+            if (!((currentConnectionType === UmlConnectionType.ASSOCIATION)
+                || (currentConnectionType === UmlConnectionType.AGGREGATION) 
+                || (currentConnectionType === UmlConnectionType.COMPOSITION))
+                && ((sourceType === UmlNodeType.N_ARY_ASSO_DIA) || (targetType === UmlNodeType.N_ARY_ASSO_DIA))) {
+                    
+                return false;
             }
+
             return { type: currentConnectionType };
 
         } else {

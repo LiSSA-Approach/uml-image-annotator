@@ -64,7 +64,7 @@ export default class UmlRenderUtil {
      * @returns {Snap.svg} rectangle
      */
     drawRectangle(parent, element, borderRadius, strokeColor, strokeWidth, fillColor) {
-        const rect = svgCreate('rect');
+        let rect = svgCreate('rect');
     
         svgAttr(rect, {
             width: element.width,
@@ -80,6 +80,45 @@ export default class UmlRenderUtil {
     
         return rect;
     }
+
+	/**
+     * Draws diamond, modified version of drawDiamond from 'bpmn-js/lib/draw/BpmnRenderer.js'
+     * 
+     * @param {djs.Graphics} parent 
+     * @param {Shape} element 
+     * @param {String} strokeColor 
+     * @param {Number} strokeWidth 
+     * @param {String} fillColor 
+     * 
+     * @returns {Snap.svg} diamond
+     */
+	drawDiamond(parent, element, strokeColor, strokeWidth, fillColor) {
+
+		let width = element.width;
+		let height = element.height;
+	
+		let x_2 = width / 2;
+		let y_2 = height / 2;
+		let points = [{ x: x_2, y: 0 }, { x: width, y: y_2 }, { x: x_2, y: height }, { x: 0, y: y_2 }];
+	
+		let pointsString = points.map(function(point) {
+		  return point.x + ',' + point.y;
+		}).join(' ');
+	
+		let diamond = svgCreate('polygon');
+		svgAttr(diamond, {
+		  points: pointsString
+		});
+		svgAttr(diamond, {
+		  stroke: strokeColor,
+		  strokeWidth: strokeWidth,
+		  fill: fillColor 
+		});
+	
+		svgAppend(parent, diamond);
+	
+		return diamond;
+	}
 
     /**
      * Draws text label. Modified version of renderLabel and renderExternalLabel from 'bpmn-js/lib/draw/BpmnRenderer.js'

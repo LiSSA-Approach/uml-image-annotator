@@ -15,7 +15,8 @@ const prefix = Settings.uml_prefix;
     INTERFACE: "Interface",
     ABSTRACT_CLASS: "AbstractClass",
     ENUMERATION: "Enumeration",
-    LABEL: "Label"
+    LABEL: "Label",
+    N_ARY_ASSO_DIA: "NAryAssociationDiamond"
 };
 
 for (const [key, type] of Object.entries(types)) {
