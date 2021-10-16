@@ -5,10 +5,10 @@
  * @module LabelType
  */
  export default Object.freeze({
-    CLASS_NAME: "className",
+    CLASS_NAME: "class_name",
     ATTRIBUTE: "attribute",
     METHOD: "method",
-    SOURCE_MULT: "sourceMultiplicity",
-    TARGET_MULT: "targetMultiplicity",
-    ENUM_VALUE: "enumValue"
+    SOURCE_MULT: "source_multiplicity",
+    TARGET_MULT: "target_multiplicity",
+    ENUM_VALUE: "enum_value"
 })

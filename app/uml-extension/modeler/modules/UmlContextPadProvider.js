@@ -103,7 +103,7 @@ export default class UmlContextPadProvider {
 
                 modeling.updateProperties(shape, {
                     text_belongs_to: element.id,
-                    labelType: labelType
+                    label_type: labelType
                 });
                 create.start(event, shape);
             }

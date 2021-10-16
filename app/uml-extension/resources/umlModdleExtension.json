@@ -38,7 +38,7 @@
               "isAttr": true
             },
             {
-              "name": "labelType",
+              "name": "label_type",
               "type": "LabelType",
               "isAttr": true
             }
@@ -48,7 +48,7 @@
           "name": "LabelType",
           "literalValues": [
             {
-              "name": "className"
+              "name": "class_name"
             },
             {
               "name": "attribute"
@@ -57,13 +57,13 @@
               "name": "method"
             },
             {
-              "name": "sourceMultiplicity"
+              "name": "source_multiplicity"
             },
             {
-              "name": "targetMultiplicity"
+              "name": "target_multiplicity"
             },
             {
-              "name": "enumValue"
+              "name": "enum_value"
             }
           ]
         },
