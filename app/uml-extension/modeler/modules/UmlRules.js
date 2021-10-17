@@ -41,6 +41,11 @@ export default class UmlRules extends RuleProvider {
         eventBus.on('swapConnectionType', function(event, connectionType) {
             currentConnectionType = connectionType;
         });
+
+        /* Deactivate adding labels per dbl click */
+        /* This is done because in UML context, many elements usually have more than one label */
+        /* and all labels should work the same way */
+        eventBus.off('element.dblclick');
     }
 
 

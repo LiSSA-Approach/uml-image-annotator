@@ -196,6 +196,14 @@ export default class UmlContextPadProvider {
             });
         }
 
+        //Context Pad Entries that all UML Edges should have
+        if (isAny(businessObject, [UmlConnectionType.EDGE])) {
+
+            assign(actions, {
+                'addEdgeLabel': _createLabelAction(LabelType.EDGE_LABEL)
+            });
+        }
+
         //additional Context Pad Entries of UML Association (also includes Aggregation and Composition)
         if (isAny(businessObject, [UmlConnectionType.ASSOCIATION])) {
 
