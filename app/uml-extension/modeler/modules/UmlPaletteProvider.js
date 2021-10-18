@@ -5,6 +5,7 @@ import EventBus from "diagram-js/lib/core/EventBus";
 
 import UmlNodeType from "../../utils/UmlNodeType";
 import Settings from "../../utils/Settings";
+import SizeMap from "../../utils/SizeMap";
 
 const UML_NODE_GROUP = 'uml-node';
 const OTHER_GROUP = 'other';
@@ -70,7 +71,11 @@ export default class UmlPaletteProvider {
 
         //creates shape of type elementType. Should be triggered every time the palette entry is clicked
         function _createListener(event) {
-            let shape = elementFactory.create('shape', { type: elementType});
+            let size = SizeMap.get(elementType),
+                width = size.width,
+                height = size.height,
+                shape = elementFactory.create('shape', { type: elementType, width: width, height: height });
+
             create.start(event, shape);
         }
 

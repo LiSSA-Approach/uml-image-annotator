@@ -20,6 +20,7 @@ import UmlNodeType from '../../utils/UmlNodeType';
 import UmlConnectionType from "../../utils/UmlConnectionType";
 import LabelType from '../../utils/LabelType';
 import Settings from '../../utils/Settings';
+import SizeMap from '../../utils/SizeMap';
 
 /**
  * UML Context Pad Provider
@@ -99,7 +100,10 @@ export default class UmlContextPadProvider {
             /* called each time a text label action is triggered */
             /* creates label model and view */
             function _createTextLabel(event) {
-                let shape = elementFactory.create('shape', { type: UmlNodeType.LABEL });
+                let size = SizeMap.get(UmlNodeType.LABEL),
+                    width = size.width,
+                    height = size.height,
+                    shape = elementFactory.create('shape', { type: UmlNodeType.LABEL, width: width, height: height });
 
                 modeling.updateProperties(shape, {
                     belongs_to: element.id,
@@ -133,11 +137,15 @@ export default class UmlContextPadProvider {
 
         //attaches qualifier to class
         function _addQualifier(event) {
-            let shape = elementFactory.create('shape', { type: UmlNodeType.QUALIFIER });
+            let size = SizeMap.get(UmlNodeType.QUALIFIER),
+                width = size.width,
+                height = size.height,
+                shape = elementFactory.create('shape', { type: UmlNodeType.QUALIFIER, width: width, height: height });
 
             modeling.updateProperties(shape, {
                 belongs_to: element.id
             });
+
             create.start(event, shape);
         }
 
