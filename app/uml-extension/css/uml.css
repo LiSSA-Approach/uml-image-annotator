@@ -43,3 +43,8 @@
 .bpmn-icon-connection-multi.green {
     color: #008000 !important;
 }
+
+/* Qualifier icon */
+.bpmn-icon-lane.orange {
+    color: #ff4500 !important;
+}

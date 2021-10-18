@@ -70,13 +70,16 @@ export default class UmlRenderer extends BaseRenderer {
     drawShape(parent, shape) {
 
         if (isAny(shape, [UmlNodeType.NODE])) {
+
             let type = shape.type;
             let colorObject = ColorMap.get(type);
-            if (isAny(shape, [UmlNodeType.CLASS_NODE])) {
+            
+            if (isAny(shape, [UmlNodeType.CLASS_NODE, UmlNodeType.QUALIFIER])) {
                 return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
             } else if (isAny(shape, [UmlNodeType.N_ARY_ASSO_DIA])) {
                 return this.renderUtil.drawDiamond(parent, shape, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
             }
+
         } else if (isAny(shape, [UmlNodeType.LABEL])) {
             return this.renderUtil.drawTextLabel(parent, shape);
         }
@@ -91,7 +94,7 @@ export default class UmlRenderer extends BaseRenderer {
      * @returns {String} svg path
      */
     getShapePath(shape) {
-        if (isAny(shape, [UmlNodeType.CLASS_NODE])) {
+        if (isAny(shape, [UmlNodeType.CLASS_NODE, UmlNodeType.QUALIFIER])) {
             return getRectPath(shape);
         } else if (isAny (shape, [UmlNodeType.N_ARY_ASSO_DIA])) {
             return getDiamondPath(shape)

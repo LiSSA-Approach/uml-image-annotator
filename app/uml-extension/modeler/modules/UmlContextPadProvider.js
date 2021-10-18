@@ -102,7 +102,7 @@ export default class UmlContextPadProvider {
                 let shape = elementFactory.create('shape', { type: UmlNodeType.LABEL });
 
                 modeling.updateProperties(shape, {
-                    text_belongs_to: element.id,
+                    belongs_to: element.id,
                     label_type: labelType
                 });
                 create.start(event, shape);
@@ -129,6 +129,16 @@ export default class UmlContextPadProvider {
             modeling.updateProperties(element, {
                 directed: !element.businessObject.directed
             });
+        }
+
+        //attaches qualifier to class
+        function _addQualifier(event) {
+            let shape = elementFactory.create('shape', { type: UmlNodeType.QUALIFIER });
+
+            modeling.updateProperties(shape, {
+                belongs_to: element.id
+            });
+            create.start(event, shape);
         }
 
         /**************************************************/
@@ -166,7 +176,7 @@ export default class UmlContextPadProvider {
                 'composition': _createConnectAction(UmlConnectionType.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
                 'dependency': _createConnectAction(UmlConnectionType.DEPENDENCY, 'otherEdge', 'bpmn-icon-default-flow blue'),
                 'extension': _createConnectAction(UmlConnectionType.EXTENSION, 'otherEdge', 'bpmn-icon-connection-multi blue'),
-                'addClassName': _createLabelAction(LabelType.CLASS_NAME)
+                'addName': _createLabelAction(LabelType.NAME)
             });
         }
 
@@ -186,6 +196,32 @@ export default class UmlContextPadProvider {
             assign(actions, {
                 'realization': _createConnectAction(UmlConnectionType.REALIZATION, 'otherEdge', 'bpmn-icon-connection-multi green')
             })
+        }
+
+        //additional Context Pad Entries of UML Classes
+        if (isAny(businessObject, [UmlNodeType.CLASS, UmlNodeType.ABSTRACT_CLASS, UmlNodeType.INTERFACE])) {
+
+            assign(actions, {
+                'createQualifier': {
+                    group: 'attach',
+                    className: 'bpmn-icon-lane orange',
+                    title: 'Attach qualifier to class',
+                    action: {
+                        click: _addQualifier,
+                        dragstart: _addQualifier
+                    }
+                }
+            })
+        }
+
+        //additional Context Pad Entries of UML Qualifiers
+        if (isAny(businessObject, [UmlNodeType.QUALIFIER])) {
+
+            assign(actions, {
+                'aggregation': _createConnectAction(UmlConnectionType.AGGREGATION, 'association', 'bpmn-icon-gateway-none red'),
+                'composition': _createConnectAction(UmlConnectionType.COMPOSITION, 'association', 'bpmn-icon-gateway-complex red'),
+                'addName': _createLabelAction(LabelType.NAME)
+            });
         }
 
         //additional Context Pad Entries of UML Enumeration

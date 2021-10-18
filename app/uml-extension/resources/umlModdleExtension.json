@@ -32,7 +32,7 @@
           ],
           "properties": [
             {
-              "name": "text_belongs_to",
+              "name": "belongs_to",
               "type": "String",
               "isRef": true,
               "isAttr": true
@@ -48,7 +48,7 @@
           "name": "LabelType",
           "literalValues": [
             {
-              "name": "class_name"
+              "name": "name"
             },
             {
               "name": "attribute"
@@ -90,6 +90,20 @@
             "superClass": [
               "uml:ClassNode"
             ]
+        },
+        {
+          "name": "Qualifier",
+          "superClass": [
+            "uml:Node"
+          ],
+          "properties": [
+            {
+              "name": "belongs_to",
+              "type": "String",
+              "isRef": true,
+              "isAttr": true
+            }
+          ]
         },
         {
           "name": "NAryAssociationDiamond",

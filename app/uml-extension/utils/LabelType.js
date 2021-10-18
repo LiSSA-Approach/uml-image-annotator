@@ -5,7 +5,7 @@
  * @module LabelType
  */
  export default Object.freeze({
-    CLASS_NAME: "class_name",
+    NAME: "name",
     ATTRIBUTE: "attribute",
     METHOD: "method",
     EDGE_LABEL: "edge_labeling",
