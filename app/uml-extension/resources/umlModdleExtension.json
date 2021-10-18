@@ -92,6 +92,12 @@
             ]
         },
         {
+          "name": "Package",
+          "superClass": [
+            "bpmn:SubChoreography"
+          ]
+      },
+        {
           "name": "Qualifier",
           "superClass": [
             "uml:Node"

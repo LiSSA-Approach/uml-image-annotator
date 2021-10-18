@@ -7,9 +7,6 @@ import {
 import UmlConnectionType from "../../utils/UmlConnectionType";
 import UmlNodeType from "../../utils/UmlNodeType";
 
-import {
-    assign
-} from 'min-dash';
 
 /**
  * UML Factory
@@ -29,13 +26,13 @@ export default class UmlFactory extends BpmnFactory {
     }
 
     /**
-     * Gives element an unique id with own prefix if type is an UML edge. Otherwise calls ensureId from BpmnFactory
+     * Gives element an unique id with own prefix if type is an UML edge or UML package. Otherwise calls ensureId from BpmnFactory
      * 
      * @param {Shape | Connection} element
      */
     _ensureId(element) {
         let prefix;
-        if (isAny(element, [UmlConnectionType.EDGE])) {
+        if (isAny(element, [UmlConnectionType.EDGE, UmlNodeType.PACKAGE])) {
             prefix = (element.$type || '').replace(/^[^:]*:/g, '') + '_';
             element.id = this._model.ids.nextPrefixed(prefix, element);
         } else {

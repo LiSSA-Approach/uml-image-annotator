@@ -124,13 +124,9 @@ export default class UmlRules extends RuleProvider {
      */
     canCreate(shape, target) {
 
-        // it should be possible to place text labels above all other elements
-        if (is(shape, UmlNodeType.LABEL)) {
-            return true;
-        }
-
-        // this makes it possible that all UML elements can be place on the ground, but not on top of each other
-        return is(target, 'bpmn:Process');
+        // this makes it possible that all UML elements can be place on the ground and on a package, but not on top of each other
+        // also, text labels can be placed over all other elements
+        return is(shape, UmlNodeType.LABEL) || is(target, UmlNodeType.PACKAGE) || is(target, 'bpmn:Process');
     }
 
     /**

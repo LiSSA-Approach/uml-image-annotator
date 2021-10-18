@@ -16,6 +16,7 @@ const prefix = Settings.uml_prefix;
     ABSTRACT_CLASS: "AbstractClass",
     ENUMERATION: "Enumeration",
     LABEL: "Label",
+    PACKAGE: "Package",
     N_ARY_ASSO_DIA: "NAryAssociationDiamond",
     QUALIFIER: "Qualifier"
 };

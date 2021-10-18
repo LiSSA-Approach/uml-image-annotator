@@ -169,7 +169,7 @@ export default class UmlContextPadProvider {
         let businessObject = element.businessObject;
 
         //Context Pad Entries that all UML Nodes should have
-        if (isAny(businessObject, [UmlNodeType.NODE])) {
+        if (isAny(businessObject, [UmlNodeType.CLASS_NODE, UmlNodeType.N_ARY_ASSO_DIA, UmlNodeType.QUALIFIER])) {
 
             assign(actions, {
                 'association': _createConnectAction(UmlConnectionType.ASSOCIATION, 'association',  'bpmn-icon-connection red')
@@ -237,6 +237,14 @@ export default class UmlContextPadProvider {
 
             assign(actions, {
                 'addEnumValue': _createLabelAction(LabelType.ENUM_VALUE)
+            });
+        }
+
+        //additional Context Pad Entries of UML Package
+        if (isAny(businessObject, [UmlNodeType.PACKAGE])) {
+
+            assign(actions, {
+                'addName': _createLabelAction(LabelType.NAME)
             });
         }
 
