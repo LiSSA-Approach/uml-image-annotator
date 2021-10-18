@@ -11,5 +11,6 @@
     EDGE_LABEL: "edge_labeling",
     SOURCE_MULT: "source_multiplicity",
     TARGET_MULT: "target_multiplicity",
-    ENUM_VALUE: "enum_value"
+    ENUM_VALUE: "enum_value",
+    COMMENT: "comment"
 })

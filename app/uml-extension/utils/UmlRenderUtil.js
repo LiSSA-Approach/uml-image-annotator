@@ -38,15 +38,17 @@ export default class UmlRenderUtil {
 	 * @constructor module:UmlRenderUtil
 	 * 
 	 * @param {TextRenderer} textRenderer 
+	 * @param {Styles} styles
      * @param {Canvas} canvas
 	 */
-	constructor(textRenderer, canvas) {
+	constructor(textRenderer, styles, canvas) {
 		if (!!UmlRenderUtil.instance) {
 			return UmlRenderUtil.instance;
 		}
 
 		UmlRenderUtil.instance = this;
 		this.textRenderer = textRenderer;
+		this.styles = styles;
 		this.canvas = canvas;
 		this.markers = {};
 	}
@@ -118,6 +120,32 @@ export default class UmlRenderUtil {
 		svgAppend(parent, diamond);
 	
 		return diamond;
+	}
+
+	/**
+	 * Draws path, modified version of drawPath from 'bpmn-js/lib/draw/BpmnRenderer.js'
+	 * 
+	 * @param {djs.Graphics} parent 
+	 * @param {Object} pathData
+	 * @param {String} strokeColor 
+	 * @param {Number} strokeWidth
+	 * 
+	 * @returns {Snap.svg} path
+	 */
+	drawPath(parent, pathData, strokeColor, strokeWidth) {
+
+		var attrs = this.styles.computeStyle(attrs, [ 'no-fill' ], {
+		  strokeWidth: strokeWidth,
+		  stroke: strokeColor
+		});
+	
+		let path = svgCreate('path');
+		svgAttr(path, { d: pathData });
+		svgAttr(path, attrs);
+	
+		svgAppend(parent, path);
+	
+		return path;
 	}
 
     /**

@@ -14,10 +14,12 @@ export default new Map([
     [UmlNodeType.PACKAGE, { colorName: 'darkcyan', colorCode: '#008B8B'}],
     [UmlNodeType.QUALIFIER, { colorName: 'orangered', colorCode: '#FF4500'}],
     [UmlNodeType.N_ARY_ASSO_DIA, { colorName: 'red', colorCode: '#cc0000' }],
+    [UmlNodeType.COMMENT, { colorName: 'orangered', colorCode: '#FF4500' }],
     [UmlConnectionType.ASSOCIATION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlConnectionType.AGGREGATION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlConnectionType.COMPOSITION, { colorName: 'red', colorCode: '#cc0000' }],
     [UmlConnectionType.EXTENSION, { colorName: 'blue', colorCode: '#0000FF'}],
     [UmlConnectionType.REALIZATION, { colorName: 'green', colorCode: '#008000'}],
-    [UmlConnectionType.DEPENDENCY, { colorName: 'blue', colorCode: '#0000FF'}]
+    [UmlConnectionType.DEPENDENCY, { colorName: 'blue', colorCode: '#0000FF'}],
+    [UmlConnectionType.COMMENT_CONNECTION, { colorName: 'orangered', colorCode: '#FF4500' }]
 ]);

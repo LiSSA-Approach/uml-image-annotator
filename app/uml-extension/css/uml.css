@@ -52,3 +52,13 @@
 .bpmn-icon-lane.orange {
     color: #ff4500 !important;
 }
+
+/* Comment icon */
+.bpmn-icon-data-object.orange {
+    color: #ff4500 !important;
+}
+
+/* Comment connection icon */
+.bpmn-icon-connection.orange {
+    color: #ff4500 !important;
+}

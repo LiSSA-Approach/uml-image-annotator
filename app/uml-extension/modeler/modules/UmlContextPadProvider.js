@@ -240,11 +240,20 @@ export default class UmlContextPadProvider {
             });
         }
 
-        //additional Context Pad Entries of UML Package
+        //additional Context Pad Entries of UML Packages
         if (isAny(businessObject, [UmlNodeType.PACKAGE])) {
 
             assign(actions, {
                 'addName': _createLabelAction(LabelType.NAME)
+            });
+        }
+
+        //additional Context Pad Entries of UML Comments
+        if (isAny(businessObject, [UmlNodeType.COMMENT])) {
+
+            assign(actions, {
+                'addComment': _createLabelAction(LabelType.COMMENT),
+                'connectComment': _createConnectAction(UmlConnectionType.COMMENT_CONNECTION, 'otherEdge', 'bpmn-icon-connection orange')
             });
         }
 

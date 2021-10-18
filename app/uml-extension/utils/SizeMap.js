@@ -13,5 +13,6 @@ export default new Map([
     [UmlNodeType.PACKAGE, { width: 600, height: 400 }],
     [UmlNodeType.QUALIFIER, { width: 50, height: 20 }],
     [UmlNodeType.N_ARY_ASSO_DIA, { width: 70, height: 70 }],
+    [UmlNodeType.COMMENT, { width: 50, height: 80 }],
     [UmlNodeType.LABEL, { width: 90, height: 20 }],
 ]);

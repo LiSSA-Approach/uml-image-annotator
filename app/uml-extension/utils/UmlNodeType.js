@@ -18,7 +18,8 @@ const prefix = Settings.uml_prefix;
     LABEL: "Label",
     PACKAGE: "Package",
     N_ARY_ASSO_DIA: "NAryAssociationDiamond",
-    QUALIFIER: "Qualifier"
+    QUALIFIER: "Qualifier",
+    COMMENT: "Comment"
 };
 
 for (const [key, type] of Object.entries(types)) {

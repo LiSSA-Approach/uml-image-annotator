@@ -96,7 +96,13 @@
           "superClass": [
             "bpmn:SubChoreography"
           ]
-      },
+        },
+        {
+          "name": "Comment",
+          "superClass": [
+            "uml:Node"
+          ]
+        },
         {
           "name": "Qualifier",
           "superClass": [
@@ -159,6 +165,12 @@
           "name": "Composition",
           "superClass": [
             "uml:Association"
+          ]
+        },
+        {
+          "name": "CommentConnection",
+          "superClass": [
+            "uml:Edge"
           ]
         }
     ]

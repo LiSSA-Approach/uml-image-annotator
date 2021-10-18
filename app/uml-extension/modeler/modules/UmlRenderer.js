@@ -49,14 +49,18 @@ export default class UmlRenderer extends BaseRenderer {
      * 
      * @param {EventBus} eventBus 
      * @param {TextRenderer} textRenderer 
+     * @param {Styles} styles
      * @param {Canvas} canvas
+     * @param {PathMap} pathMap
      */
-    constructor(eventBus, textRenderer, canvas) {
+    constructor(eventBus, textRenderer, styles, canvas, pathMap) {
         super(eventBus, PRIORITY);
 
         this.textRenderer = textRenderer;
+        this.styles = styles;
         this.canvas = canvas;
-        this.renderUtil = new UmlRenderUtil(this.textRenderer, this.canvas);
+        this.pathMap = pathMap;
+        this.renderUtil = new UmlRenderUtil(this.textRenderer, this.styles, this.canvas);
     }
 
     /**
@@ -78,6 +82,22 @@ export default class UmlRenderer extends BaseRenderer {
                 return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
             } else if (isAny(shape, [UmlNodeType.N_ARY_ASSO_DIA])) {
                 return this.renderUtil.drawDiamond(parent, shape, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
+            } else if (isAny(shape, [UmlNodeType.COMMENT])) {
+
+                //Same shape as bpmn:DataObject (copied from BpmnRenderer)
+                let pathData = this.pathMap.getScaledPath('DATA_OBJECT_PATH', {
+                    xScaleFactor: 1,
+                    yScaleFactor: 1,
+                    containerWidth: shape.width,
+                    containerHeight: shape.height,
+                    position: {
+                      mx: 0.474,
+                      my: 0.296
+                    }
+                });
+
+                return this.renderUtil.drawPath(parent, pathData, colorObject.colorCode, STROKE_WIDTH)
+            
             }
 
         } else if (isAny(shape, [UmlNodeType.LABEL])) {
@@ -133,7 +153,7 @@ export default class UmlRenderer extends BaseRenderer {
         }
 
         //for these types of connections, we need dotted lines
-        if (isAny(connection, [UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY])) {
+        if (isAny(connection, [UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY, UmlConnectionType.COMMENT_CONNECTION])) {
             attrs.strokeDasharray = STROKE_DASHARRAY;
             attrs.strokeLinecap = STROKE_SHAPE;
             attrs.strokeLinejoin = STROKE_SHAPE;

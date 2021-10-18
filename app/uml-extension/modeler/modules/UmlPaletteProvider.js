@@ -53,6 +53,7 @@ export default class UmlPaletteProvider {
             'create-abstractClass': this._createAction(UmlNodeType.ABSTRACT_CLASS, UML_NODE_GROUP, 'uml-icon-abstract'),
             'create-enumeration': this._createAction(UmlNodeType.ENUMERATION, UML_NODE_GROUP, 'uml-icon-enum'),
             'create-package': this._createAction(UmlNodeType.PACKAGE, OTHER_GROUP, 'uml-icon-package'),
+            'create-comment': this._createAction(UmlNodeType.COMMENT, OTHER_GROUP, 'bpmn-icon-data-object orange'),
             'create-n-ary-asso-dia': this._createAction(UmlNodeType.N_ARY_ASSO_DIA, OTHER_GROUP, 'bpmn-icon-gateway-none red'),
         });
 

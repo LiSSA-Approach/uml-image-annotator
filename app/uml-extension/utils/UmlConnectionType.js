@@ -15,7 +15,8 @@ const prefix = Settings.uml_prefix;
     REALIZATION: "Realization",
     DEPENDENCY: "Dependency",
     AGGREGATION: "Aggregation",
-    COMPOSITION: "Composition"
+    COMPOSITION: "Composition",
+    COMMENT_CONNECTION: "CommentConnection"
 };
 
 for (const [key, type] of Object.entries(types)) {

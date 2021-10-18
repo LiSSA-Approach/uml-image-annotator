@@ -107,6 +107,11 @@ export default class UmlRules extends RuleProvider {
                 return false;
             }
 
+            //comments can only be connected with comment connection
+            if (sourceType === UmlNodeType.COMMENT || targetType === UmlNodeType.COMMENT) {
+                currentConnectionType = UmlConnectionType.COMMENT_CONNECTION;
+            }
+
             return { type: currentConnectionType };
 
         } else {
