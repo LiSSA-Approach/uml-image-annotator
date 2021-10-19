@@ -136,13 +136,15 @@ export default class UmlRenderer extends BaseRenderer {
 
         //for these types of connections, we need an marker end 
         if (isAny(connection, [UmlConnectionType.EXTENSION, UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY]) 
-            || (isAny(connection, [UmlConnectionType.ASSOCIATION]) && connection.businessObject.directed)) {
+            || (isAny(connection, [UmlConnectionType.RELATIONSHIP]) && connection.businessObject.directed)) {
 
             attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, colorObject.colorCode, MarkerType.END);
         }
 
         //for these types of connections, we need an marker start
-        if (isAny(connection, [UmlConnectionType.AGGREGATION, UmlConnectionType.COMPOSITION])) {
+        if (isAny(connection, [UmlConnectionType.AGGREGATION, UmlConnectionType.COMPOSITION])
+            || (isAny(connection, [UmlConnectionType.ASSOCIATION]) && connection.businessObject.crossed)) {
+                
             let fillColor = NO_FILLCOLOR;
 
             if (connection.type === UmlConnectionType.COMPOSITION) {

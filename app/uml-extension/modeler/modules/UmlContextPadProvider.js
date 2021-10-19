@@ -135,6 +135,13 @@ export default class UmlContextPadProvider {
             });
         }
 
+        //changes association to crossed or not crossed, based on previous value
+        function _changeCrossed() {
+            modeling.updateProperties(element, {
+                crossed: !element.businessObject.crossed
+            });
+        }
+
         //attaches qualifier to class
         function _addQualifier(event) {
             let size = SizeMap.get(UmlNodeType.QUALIFIER),
@@ -265,12 +272,12 @@ export default class UmlContextPadProvider {
             });
         }
 
-        //additional Context Pad Entries of UML Association (also includes Aggregation and Composition)
-        if (isAny(businessObject, [UmlConnectionType.ASSOCIATION])) {
+        //additional Context Pad Entries of UML Relationships (includes Association, Aggregation and Composition)
+        if (isAny(businessObject, [UmlConnectionType.RELATIONSHIP])) {
 
             assign(actions, {
                 'changeDirected': {
-                    group: 'changeDirected',
+                    group: 'changeAttr',
                     className: 'bpmn-icon-end-event-signal',
                     title: 'Change connection to directed or undirected',
                     action: {
@@ -280,6 +287,22 @@ export default class UmlContextPadProvider {
                 },
                 'addSourceMultiplicity': _createLabelAction(LabelType.SOURCE_MULT),
                 'addTargetMultiplicity': _createLabelAction(LabelType.TARGET_MULT)
+            });
+        }
+
+        //additional Context Pad Entries of UML Associations
+        if (isAny(businessObject, [UmlConnectionType.ASSOCIATION])) {
+
+            assign(actions, {
+                'changeCrossed': {
+                    group: 'changeAttr',
+                    className: 'bpmn-icon-gateway-xor',
+                    title: 'Change association to crossed or not crossed',
+                    action: {
+                        click: _changeCrossed,
+                        dragstart: _changeCrossed
+                    }
+                }
             });
         }
         

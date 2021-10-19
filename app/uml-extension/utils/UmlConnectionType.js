@@ -10,6 +10,7 @@ const prefix = Settings.uml_prefix;
  */
  let types = {
     EDGE: "Edge",
+    RELATIONSHIP: "Relationship",
     ASSOCIATION: "Association",
     EXTENSION: "Extension",
     REALIZATION: "Realization",

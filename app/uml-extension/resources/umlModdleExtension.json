@@ -124,10 +124,11 @@
           ]
       },
         {
-            "name": "Association",
+            "name": "Relationship",
             "superClass": [
               "uml:Edge"
             ],
+            "isAbstract": true,
             "properties": [
               {
                 "name": "directed",
@@ -156,15 +157,29 @@
           ]
         },
         {
+          "name": "Association",
+          "superClass": [
+            "uml:Relationship"
+          ],
+          "properties": [
+            {
+              "name": "crossed",
+              "type": "Boolean",
+              "isAttr": true,
+              "default": false
+            }
+          ]
+        },
+        {
           "name": "Aggregation",
           "superClass": [
-            "uml:Association"
+            "uml:Relationship"
           ]
         },
         {
           "name": "Composition",
           "superClass": [
-            "uml:Association"
+            "uml:Relationship"
           ]
         },
         {

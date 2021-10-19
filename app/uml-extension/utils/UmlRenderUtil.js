@@ -249,18 +249,35 @@ export default class UmlRenderUtil {
 			} 
 		} else if (markerType === MarkerType.START) {
 		
-			//same startmarker as bpmn:ConditionalFlow
-			let markerStart = svgCreate('path');
-			svgAttr(markerStart, { d: 'M 0 10 L 8 6 L 16 10 L 8 14 Z' }); 
-	
-			this._addMarker(id, {
-			  	element: markerStart,
-			  	attrs: {
-					fill: fillColor,
-					stroke: strokeColor
-			  	},
-			  	ref: { x: -1, y: 10 }
-			});
+			if (connectionType === UmlConnectionType.AGGREGATION || connectionType === UmlConnectionType.COMPOSITION) {
+
+				//same startmarker as bpmn:ConditionalFlow
+				let markerStart = svgCreate('path');
+				svgAttr(markerStart, { d: 'M 0 10 L 8 6 L 16 10 L 8 14 Z' }); 
+		
+				this._addMarker(id, {
+					element: markerStart,
+					attrs: {
+						fill: fillColor,
+						stroke: strokeColor
+					},
+					ref: { x: -1, y: 10 }
+				});
+			
+			//add cross to association start
+			} else if (connectionType === UmlConnectionType.ASSOCIATION) {
+				
+				let markerStart = svgCreate('path');
+				svgAttr(markerStart, { d: "M 3,3 L 7,7 M 3,7 L 7,3" }); 
+		
+				this._addMarker(id, {
+					element: markerStart,
+					attrs: {
+						stroke: strokeColor
+					},
+					ref: { x: 2, y: 5 }
+				});
+			}
 		}
 	}
 
