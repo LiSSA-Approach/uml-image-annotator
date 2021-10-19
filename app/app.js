@@ -19,7 +19,7 @@ var modeler,      // modeler that is used. Either BpmnModeler or UMLModeler
 
 
 /* The selected mode decides wheter a BPMN or UML class diagram is going to be annotated */
-if (Settings.mode === Mode.BPMN) {
+if (Settings.MODE === Mode.BPMN) {
 
   modeler = new BpmnModeler({
     container: '#canvas',
@@ -44,7 +44,7 @@ if (Settings.mode === Mode.BPMN) {
   diagramXML = bpmnDiagramXML;
 
 /* contribution of this annotator extension */
-} else if (Settings.mode === Mode.UML_CLASS) {
+} else if (Settings.MODE === Mode.UML_CLASS) {
 
   modeler = new UmlModeler({
     container: '#canvas',
@@ -62,8 +62,8 @@ if (Settings.mode === Mode.BPMN) {
   diagramXML = umlDiagramXML;
 }
 
-document.title = Settings.mode + ' Annotator';
-$('#diagramType').text(Settings.mode);
+document.title = Settings.MODE + ' Annotator';
+$('#diagramType').text(Settings.MODE);
 
 
 /* Code from original BPMN annotator */

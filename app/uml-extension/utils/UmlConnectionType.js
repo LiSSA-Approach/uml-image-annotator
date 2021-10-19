@@ -1,6 +1,6 @@
 import Settings from './Settings';
 
-const prefix = Settings.uml_prefix;
+const prefix = Settings.UML_PREFIX;
 
 /**
  * All available UML Class diagram connection types

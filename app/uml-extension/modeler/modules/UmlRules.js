@@ -12,7 +12,7 @@ import {
   
 
 /* This Rules should be called before standard BpmnRules */
-const PRIORITY = Settings.uml_priority;
+const PRIORITY = Settings.UML_PRIORITY;
 
 /* Default connection type. Will be changed via ContextPad during annotation */
 var currentConnectionType = UmlConnectionType.ASSOCIATION;
@@ -63,7 +63,7 @@ export default class UmlRules extends RuleProvider {
             targetType = target.type;
 
         //allow connection between UML shapes with currentConnectionType, ignore BPMN shapes (these shouldn't be used anyway)
-        if (sourceType.startsWith(Settings.uml_prefix) && targetType.startsWith(Settings.uml_prefix)) {
+        if (sourceType.startsWith(Settings.UML_PREFIX) && targetType.startsWith(Settings.UML_PREFIX)) {
 
             //extension connection rules
             if (currentConnectionType === UmlConnectionType.EXTENSION) {

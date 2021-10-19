@@ -86,7 +86,7 @@ export default class UmlContextPadProvider {
             return {
                 group: group,
                 className: iconClassName,
-                title: 'Connect using ' + connectionType.replace(Settings.uml_prefix, 'UML '),
+                title: 'Connect using ' + connectionType.replace(Settings.UML_PREFIX, 'UML '),
                 action: {
                     click: _startConnect,
                     dragstart: _startConnect

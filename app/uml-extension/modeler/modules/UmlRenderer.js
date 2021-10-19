@@ -34,7 +34,7 @@ const STROKE_DASHARRAY = '5, 5';
 const STROKE_SHAPE = 'square';
 
 /* This Renderer should be called before standard BpmnRenderer */
-const PRIORITY = Settings.uml_priority;
+const PRIORITY = Settings.UML_PRIORITY;
 
 /**
  * UML Renderer
@@ -175,6 +175,6 @@ export default class UmlRenderer extends BaseRenderer {
     canRender(element) {
         let type = element.type;
 
-        return type && type.startsWith(Settings.uml_prefix);
+        return type && type.startsWith(Settings.UML_PREFIX);
     }
 }

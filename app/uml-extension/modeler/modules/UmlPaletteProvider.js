@@ -87,7 +87,7 @@ export default class UmlPaletteProvider {
         return {
             group: group,
             className: className,
-            title: 'Create ' + elementType.replace(Settings.uml_prefix, 'UML '),
+            title: 'Create ' + elementType.replace(Settings.UML_PREFIX, 'UML '),
             action: {
                 dragstart: _createListener,
                 click: _createListener

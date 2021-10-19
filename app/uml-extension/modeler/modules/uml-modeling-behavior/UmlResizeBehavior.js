@@ -5,7 +5,7 @@ import UmlNodeType from '../../../utils/UmlNodeType';
 import Settings from '../../../utils/Settings';
 import EventBus from 'diagram-js/lib/core/EventBus';
 
-const PRIORITY = Settings.uml_priority;
+const PRIORITY = Settings.UML_PRIORITY;
 
 /* Minimum min size for text labels to increase annotation precision */
 const TEXT_LABEL_MIN_DIMENSIONS = { width: 10, height: 10 };
