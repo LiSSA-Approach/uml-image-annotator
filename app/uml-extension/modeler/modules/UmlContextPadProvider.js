@@ -196,8 +196,8 @@ export default class UmlContextPadProvider {
         }
 
 
-        //additional Context Pad Entries of UML Class, UML Abstract Class and UML Interface
-        if (isAny(businessObject, [UmlNodeType.CLASS, UmlNodeType.ABSTRACT_CLASS, UmlNodeType.INTERFACE])) {
+        //additional Context Pad Entries of UML Class, UML Abstract Class, UML Interface, Utility and Library
+        if (isAny(businessObject, [UmlNodeType.CLASS, UmlNodeType.ABSTRACT_CLASS, UmlNodeType.INTERFACE, UmlNodeType.UTILITY, UmlNodeType.LIBRARY])) {
 
             assign(actions, {
                 'addAttribute': _createLabelAction(LabelType.ATTRIBUTE),
@@ -210,6 +210,14 @@ export default class UmlContextPadProvider {
 
             assign(actions, {
                 'realization': _createConnectAction(UmlConnectionType.REALIZATION, 'otherEdge', 'bpmn-icon-connection-multi green')
+            })
+        }
+
+        //additional Context Pad Entries of UML Objects
+        if (isAny(businessObject, [UmlNodeType.OBJECT])) {
+
+            assign(actions, {
+                'addAttribute': _createLabelAction(LabelType.ATTRIBUTE)
             })
         }
 

@@ -5,25 +5,25 @@
     "associations": [],
     "types": [
         {
-            "name": "Node",
-            "superClass": [
-              "bpmn:FlowNode"
-            ],
-            "isAbstract": true
+          "name": "Node",
+          "superClass": [
+            "bpmn:FlowNode"
+          ],
+          "isAbstract": true
         },
         {
-            "name": "ClassNode",
-            "superClass": [
-              "uml:Node"
-            ],
-            "isAbstract": true
+          "name": "ClassNode",
+          "superClass": [
+            "uml:Node"
+          ],
+          "isAbstract": true
         },
         {
-            "name": "Edge",
-            "superClass": [
-              "bpmn:SequenceFlow"
-            ],
-            "isAbstract": true
+          "name": "Edge",
+          "superClass": [
+            "bpmn:SequenceFlow"
+          ],
+          "isAbstract": true
         },
         {
           "name": "Label",
@@ -68,28 +68,46 @@
           ]
         },
         {
-            "name": "Class",
-            "superClass": [
-              "uml:ClassNode"
-            ]
+          "name": "Class",
+          "superClass": [
+            "uml:ClassNode"
+          ]
         },
         {
-            "name": "Interface",
-            "superClass": [
-              "uml:ClassNode"
-            ]
+          "name": "Interface",
+          "superClass": [
+            "uml:ClassNode"
+          ]
         },
         {
-            "name": "AbstractClass",
-            "superClass": [
-              "uml:ClassNode"
-            ]
+          "name": "AbstractClass",
+          "superClass": [
+            "uml:ClassNode"
+          ]
         },
         {
-            "name": "Enumeration",
-            "superClass": [
-              "uml:ClassNode"
-            ]
+          "name": "Enumeration",
+          "superClass": [
+            "uml:ClassNode"
+          ]
+        },
+        {
+          "name": "Object",
+          "superClass": [
+            "uml:ClassNode"
+          ]
+        },
+        {
+          "name": "Utility",
+          "superClass": [
+            "uml:ClassNode"
+          ]
+        },
+        {
+          "name": "Library",
+          "superClass": [
+            "uml:ClassNode"
+          ]
         },
         {
           "name": "Package",
@@ -122,27 +140,27 @@
           "superClass": [
             "uml:Node"
           ]
-      },
-        {
-            "name": "Relationship",
-            "superClass": [
-              "uml:Edge"
-            ],
-            "isAbstract": true,
-            "properties": [
-              {
-                "name": "directed",
-                "type": "Boolean",
-                "isAttr": true,
-                "default": false
-              }
-            ]
         },
         {
-            "name": "Extension",
-            "superClass": [
-              "uml:Edge"
-            ]
+          "name": "Relationship",
+          "superClass": [
+            "uml:Edge"
+          ],
+          "isAbstract": true,
+          "properties": [
+            {
+              "name": "directed",
+              "type": "Boolean",
+              "isAttr": true,
+              "default": false
+            }
+          ]
+        },
+        {
+          "name": "Extension",
+          "superClass": [
+            "uml:Edge"
+          ]
         },
         {
           "name": "Realization",
