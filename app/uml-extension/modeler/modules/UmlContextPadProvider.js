@@ -80,8 +80,8 @@ export default class UmlContextPadProvider {
             [ADD_TRT_MULT, this._createLabelAction(LabelType.TARGET_MULT)],
             [ADD_ENUM_VAL, this._createLabelAction(LabelType.ENUM_VALUE)],
             [ADD_COMMENT, this._createLabelAction(LabelType.COMMENT)],
-            [CHANGE_DIRECTED, this._createChangeDirectedAction],
-            [CHANGE_CROSSED, this._createChangeCrossedAction],
+            [CHANGE_DIRECTED, this._createChangeDirectedAction()],
+            [CHANGE_CROSSED, this._createChangeCrossedAction()],
         ]);
 
         //maps each element to a their actions
