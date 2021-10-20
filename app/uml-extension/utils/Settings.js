@@ -20,5 +20,9 @@ export default Object.freeze({
     DEFAULT_UML_COLOR: 'red',
 
     /* Default size for UML elements. Used if no size is defined in SizeMap */
-    DEFAULT_UML_SIZE: { width: 100, height: 100 }
+    DEFAULT_UML_SIZE: { width: 100, height: 100 },
+
+    /* If this is true, all UML connecting rules are disabled (e.g. it is now possible to extends an interface as a class)
+    /* This can be useful to annotate diagrams with modelling errors */
+    IGNORE_UML_CONNECTING_RULES: true
 })

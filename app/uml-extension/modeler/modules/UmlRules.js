@@ -65,6 +65,11 @@ export default class UmlRules extends RuleProvider {
         //allow connection between UML shapes with currentConnectionType, ignore BPMN shapes (these shouldn't be used anyway)
         if (sourceType.startsWith(Settings.UML_PREFIX) && targetType.startsWith(Settings.UML_PREFIX)) {
 
+            //If this settings is activated, ignore all connecting rules and instantly return currentConnectionType
+            if (Settings.IGNORE_UML_CONNECTING_RULES) {
+                return { type: currentConnectionType };
+            }
+
             //extension connection rules
             if (currentConnectionType === UmlConnectionType.EXTENSION) {
 
