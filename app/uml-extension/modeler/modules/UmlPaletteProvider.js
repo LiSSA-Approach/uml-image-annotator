@@ -66,9 +66,11 @@ export default class UmlPaletteProvider {
     /**
      * Creates action for creation of a certain element 
      * 
-     * @param {String} elementType type of element that will be created
+     * @param {UmlNodeType} elementType type of element that will be created
      * @param {String} group Palette group. Determines palette order
      * @param {String} className css class name for palette image
+     * 
+     * @returns {Object} action
      */
     _createAction(elementType, group, className) {
         let elementFactory = this.elementFactory,
