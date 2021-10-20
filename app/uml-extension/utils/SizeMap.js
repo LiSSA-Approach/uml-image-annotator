@@ -1,11 +1,12 @@
 import UmlNodeType from "./UmlNodeType";
+import Settings from "./Settings";
 
 /**
  * Maps certain UML nodes to their default size
  * 
  * @module SizeMap
  */
-export default new Map([
+const sizeMap = new Map([
     [UmlNodeType.CLASS, { width: 100, height: 80 }],
     [UmlNodeType.INTERFACE, { width: 100, height: 80 }],
     [UmlNodeType.ABSTRACT_CLASS, { width: 100, height: 80 }],
@@ -19,3 +20,11 @@ export default new Map([
     [UmlNodeType.COMMENT, { width: 50, height: 80 }],
     [UmlNodeType.LABEL, { width: 90, height: 20 }]
 ]);
+
+const defaultSize = Settings.DEFAULT_UML_SIZE;
+
+export default class SizeMap {
+    static get(key) {
+        return sizeMap.get(key) || defaultSize;
+    }
+}

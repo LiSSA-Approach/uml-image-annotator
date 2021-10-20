@@ -76,12 +76,14 @@ export default class UmlRenderer extends BaseRenderer {
         if (isAny(shape, [UmlNodeType.NODE, UmlNodeType.PACKAGE])) {
 
             let type = shape.type;
-            let colorObject = ColorMap.get(type);
+            let color = ColorMap.get(type);
             
             if (isAny(shape, [UmlNodeType.CLASS_NODE, UmlNodeType.QUALIFIER, UmlNodeType.PACKAGE])) {
-                return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
+                return this.renderUtil.drawRectangle(parent, shape, BORDER_RADIUS, color, STROKE_WIDTH, NO_FILLCOLOR);
+
             } else if (isAny(shape, [UmlNodeType.N_ARY_ASSO_DIA])) {
-                return this.renderUtil.drawDiamond(parent, shape, colorObject.colorCode, STROKE_WIDTH, NO_FILLCOLOR);
+                return this.renderUtil.drawDiamond(parent, shape, color, STROKE_WIDTH, NO_FILLCOLOR);
+
             } else if (isAny(shape, [UmlNodeType.COMMENT])) {
 
                 //Same shape as bpmn:DataObject (copied from BpmnRenderer)
@@ -96,7 +98,7 @@ export default class UmlRenderer extends BaseRenderer {
                     }
                 });
 
-                return this.renderUtil.drawPath(parent, pathData, colorObject.colorCode, STROKE_WIDTH)
+                return this.renderUtil.drawPath(parent, pathData, color, STROKE_WIDTH);
             
             }
 
@@ -116,6 +118,7 @@ export default class UmlRenderer extends BaseRenderer {
     getShapePath(shape) {
         if (isAny(shape, [UmlNodeType.CLASS_NODE, UmlNodeType.QUALIFIER, UmlNodeType.PACKAGE])) {
             return getRectPath(shape);
+            
         } else if (isAny (shape, [UmlNodeType.N_ARY_ASSO_DIA])) {
             return getDiamondPath(shape)
         }
@@ -131,14 +134,14 @@ export default class UmlRenderer extends BaseRenderer {
      */
     drawConnection(parent, connection) {
         let connectionType = connection.type;
-        let colorObject = ColorMap.get(connectionType);
-        let attrs = {stroke: colorObject.colorCode, strokeWidth: STROKE_WIDTH};
+        let color = ColorMap.get(connectionType);
+        let attrs = {stroke: color, strokeWidth: STROKE_WIDTH};
 
         //for these types of connections, we need an marker end 
         if (isAny(connection, [UmlConnectionType.EXTENSION, UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY]) 
             || (isAny(connection, [UmlConnectionType.RELATIONSHIP]) && connection.businessObject.directed)) {
 
-            attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, colorObject.colorCode, MarkerType.END);
+            attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, color, MarkerType.END);
         }
 
         //for these types of connections, we need an marker start
@@ -148,10 +151,10 @@ export default class UmlRenderer extends BaseRenderer {
             let fillColor = NO_FILLCOLOR;
 
             if (connection.type === UmlConnectionType.COMPOSITION) {
-                fillColor = colorObject.colorCode;
+                fillColor = color;
             }
 
-            attrs.markerStart = this.renderUtil.marker(connectionType, fillColor, colorObject.colorCode, MarkerType.START);
+            attrs.markerStart = this.renderUtil.marker(connectionType, fillColor, color, MarkerType.START);
         }
 
         //for these types of connections, we need dotted lines

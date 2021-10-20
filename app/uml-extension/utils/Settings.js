@@ -14,5 +14,11 @@ export default Object.freeze({
     UML_PREFIX: 'uml:',
 
     /* Priority for UML modules. If this priority value is higher than priority values of related modules, the UML modules get called first */
-    UML_PRIORITY: 2000
+    UML_PRIORITY: 2000,
+
+    /* Default color for UML elements. Used if no color is defined in ColorMap */
+    DEFAULT_UML_COLOR: 'red',
+
+    /* Default size for UML elements. Used if no size is defined in SizeMap */
+    DEFAULT_UML_SIZE: { width: 100, height: 100 }
 })
