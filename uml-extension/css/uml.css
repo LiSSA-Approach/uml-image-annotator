@@ -1,0 +1,76 @@
+.uml-icon-class {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='red' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EClass%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-interface {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='green' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EInter.%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-abstract {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='blue' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EAbstr.%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-enum {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='orange' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EEnum%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-package {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='darkcyan' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EPack.%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-object {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='indigo' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EObject%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-utility {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='aqua' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3EUtility%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+.uml-icon-library {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='35'%3E%3Crect x='0' y='0' width='46' height='35' stroke='springgreen' stroke-width='2px' fill='white'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ELibrary%3C/text%3E%3C/svg%3E") no-repeat;
+}
+
+/* Association icon */
+.bpmn-icon-connection.red {
+    color: #cc0000 !important;
+}
+
+/* Aggregation icon */
+.bpmn-icon-gateway-none.red {
+    color: #cc0000 !important;
+}
+
+/* Composition icon */
+.bpmn-icon-gateway-complex.red {
+    color: #cc0000 !important;
+}
+
+/* Dependency icon */
+.bpmn-icon-default-flow.blue {
+    color: #0000FF !important;
+}
+
+/* Extension icon */
+.bpmn-icon-connection-multi.blue {
+    color: #0000FF !important;
+}
+
+/* Realization icon */
+.bpmn-icon-connection-multi.green {
+    color: #008000 !important;
+}
+
+/* Qualifier icon */
+.bpmn-icon-lane.orange {
+    color: #ff4500 !important;
+}
+
+/* Comment icon */
+.bpmn-icon-data-object.orange {
+    color: #ff4500 !important;
+}
+
+/* Comment connection icon */
+.bpmn-icon-connection.orange {
+    color: #ff4500 !important;
+}

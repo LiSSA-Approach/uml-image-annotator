@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- {"backgroundSize":1000} -->
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.omg.org/spec/UML/20161101" targetNamespace="" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+  <process id="Process_1gpwvpe">
+    <uml:Class id="Class_09fpan1">
+      <outgoing>Association_08wvf5f_08wvf5f</outgoing>
+    </uml:Class>
+    <uml:Class id="Class_1sfm2u0">
+      <incoming>Association_08wvf5f_08wvf5f</incoming>
+    </uml:Class>
+    <uml:Association id="Association_08wvf5f" sourceRef="Class_09fpan1" targetRef="Class_1sfm2u0" directed="true"/>
+  </process>
+  <bpmndi:BPMNDiagram id="sid-74620812-92c4-44e5-949c-aa47393d3830">
+    <bpmndi:BPMNPlane id="sid-cdcae759-2af7-4a6d-bd02-53f3352a731d" bpmnElement="Process_1gpwvpe">
+      <bpmndi:BPMNEdge id="Association_08wvf5f_di" bpmnElement="Association_08wvf5f">
+        <omgdi:waypoint x="210" y="80" />
+        <omgdi:waypoint x="390" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Class_09fpan1_di" bpmnElement="Class_09fpan1">
+        <omgdc:Bounds x="110" y="40" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Class_1sfm2u0_di" bpmnElement="Class_1sfm2u0">
+        <omgdc:Bounds x="390" y="40" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+    <bpmndi:BPMNLabelStyle id="sid-e0502d32-f8d1-41cf-9c4a-cbb49fecf581">
+      <omgdc:Font name="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+    <bpmndi:BPMNLabelStyle id="sid-84cb49fd-2f7c-44fb-8950-83c3fa153d3b">
+      <omgdc:Font name="Arial" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" />
+    </bpmndi:BPMNLabelStyle>
+  </bpmndi:BPMNDiagram>
+</definitions>
