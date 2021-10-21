@@ -36,6 +36,7 @@ const ADD_ENUM_VAL = 'addEnumValue';
 const ADD_COMMENT = 'addComment';
 const CHANGE_DIRECTED = 'changeDirected';
 const CHANGE_CROSSED = 'changeCrossed';
+const CREATE_QUALIFIER = 'createQualifier';
 
 /**
  * UML Context Pad Provider
@@ -82,16 +83,19 @@ export default class UmlContextPadProvider {
             [ADD_COMMENT, this._createLabelAction(LabelType.COMMENT)],
             [CHANGE_DIRECTED, this._createChangeDirectedAction()],
             [CHANGE_CROSSED, this._createChangeCrossedAction()],
+            [CREATE_QUALIFIER, this._createQualifierAction()]
         ]);
 
         //maps each element to a their actions
         this._elementToActions = new Map([
             [UmlNodeType.CLASS, [REMOVE, ASSOCIATION, AGGREGATION, COMPOSITION, DEPENDENCY, EXTENSION, REALIZATION,
-                                    ADD_NAME, ADD_ATTRIBUTE, ADD_METHOD]],
+                                    ADD_NAME, ADD_ATTRIBUTE, ADD_METHOD, CREATE_QUALIFIER]],
             [UmlNodeType.ABSTRACT_CLASS, [REMOVE, ASSOCIATION, AGGREGATION, COMPOSITION, DEPENDENCY, EXTENSION, REALIZATION,
                                     ADD_NAME, ADD_ATTRIBUTE, ADD_METHOD]],
+                                    
+            /* realization is included to label modelling errors (e.g. interface realizes class) */
             [UmlNodeType.INTERFACE, [REMOVE, ASSOCIATION, AGGREGATION, COMPOSITION, DEPENDENCY, EXTENSION, ADD_NAME,
-                                    ADD_ATTRIBUTE, ADD_METHOD]],
+                                    ADD_ATTRIBUTE, ADD_METHOD, REALIZATION]], 
             [UmlNodeType.ENUMERATION, [REMOVE, ASSOCIATION, AGGREGATION, COMPOSITION, DEPENDENCY, ADD_NAME, ADD_ENUM_VAL]],
             [UmlNodeType.LABEL, [REMOVE]],
             [UmlNodeType.N_ARY_ASSO_DIA, [REMOVE, ASSOCIATION]],
