@@ -4,7 +4,7 @@
   "description": "A simple modeler built with bpmn-js",
   "scripts": {
     "all": "run-s lint build",
-    "build": "webpack --mode production",
+    "build": "webpack",
     "dev": "webpack-dev-server --content-base=public --open",
     "remote": "webpack-dev-server --config ./webpack.config.remote.js --content-base=public",
     "lint": "eslint .",
