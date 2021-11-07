@@ -2360,7 +2360,7 @@ class UmlContextPadProvider {
 
         function _changeDirected(event, element) {
             modeling.updateProperties(element, {
-                directed: !element.businessObject.directed
+                has_arrowhead: !element.businessObject.has_arrowhead
             });
         }
 
@@ -2768,7 +2768,7 @@ class UmlRenderer extends diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_MOD
 
         //for these types of connections, we need an marker end 
         if (Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_12__["isAny"])(connection, [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_4__["default"].EXTENSION, _utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_4__["default"].REALIZATION, _utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_4__["default"].DEPENDENCY]) 
-            || (Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_12__["isAny"])(connection, [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_4__["default"].RELATIONSHIP]) && connection.businessObject.directed)) {
+            || (Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_12__["isAny"])(connection, [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_4__["default"].RELATIONSHIP]) && connection.businessObject.has_arrowhead)) {
 
             attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, color, _utils_MarkerType__WEBPACK_IMPORTED_MODULE_8__["default"].END);
         }
@@ -3214,7 +3214,7 @@ module.exports = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!-- {\"background
 /*! exports provided: name, uri, prefix, associations, types, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"name\":\"Unified Modeling Language (UML)\",\"uri\":\"http://www.omg.org/spec/UML/20161101\",\"prefix\":\"uml\",\"associations\":[],\"types\":[{\"name\":\"Node\",\"superClass\":[\"bpmn:FlowNode\"],\"isAbstract\":true},{\"name\":\"ClassNode\",\"superClass\":[\"uml:Node\"],\"isAbstract\":true},{\"name\":\"Edge\",\"superClass\":[\"bpmn:SequenceFlow\"],\"isAbstract\":true},{\"name\":\"Label\",\"superClass\":[\"bpmn:TextAnnotation\"],\"properties\":[{\"name\":\"belongs_to\",\"type\":\"String\",\"isRef\":true,\"isAttr\":true},{\"name\":\"label_type\",\"type\":\"LabelType\",\"isAttr\":true}]},{\"name\":\"LabelType\",\"literalValues\":[{\"name\":\"name\"},{\"name\":\"attribute\"},{\"name\":\"method\"},{\"name\":\"source_multiplicity\"},{\"name\":\"target_multiplicity\"},{\"name\":\"enum_value\"}]},{\"name\":\"Class\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Interface\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"AbstractClass\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Enumeration\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Object\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Utility\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Library\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Package\",\"superClass\":[\"bpmn:SubChoreography\"]},{\"name\":\"Comment\",\"superClass\":[\"uml:Node\"]},{\"name\":\"Qualifier\",\"superClass\":[\"uml:Node\"],\"properties\":[{\"name\":\"belongs_to\",\"type\":\"String\",\"isRef\":true,\"isAttr\":true}]},{\"name\":\"NAryAssociationDiamond\",\"superClass\":[\"uml:Node\"]},{\"name\":\"Relationship\",\"superClass\":[\"uml:Edge\"],\"isAbstract\":true,\"properties\":[{\"name\":\"directed\",\"type\":\"Boolean\",\"isAttr\":true,\"default\":false}]},{\"name\":\"Extension\",\"superClass\":[\"uml:Edge\"]},{\"name\":\"Realization\",\"superClass\":[\"uml:Edge\"]},{\"name\":\"Dependency\",\"superClass\":[\"uml:Edge\"]},{\"name\":\"Association\",\"superClass\":[\"uml:Relationship\"],\"properties\":[{\"name\":\"crossed\",\"type\":\"Boolean\",\"isAttr\":true,\"default\":false}]},{\"name\":\"Aggregation\",\"superClass\":[\"uml:Relationship\"]},{\"name\":\"Composition\",\"superClass\":[\"uml:Relationship\"]},{\"name\":\"CommentConnection\",\"superClass\":[\"uml:Edge\"]}]}");
+module.exports = JSON.parse("{\"name\":\"Unified Modeling Language (UML)\",\"uri\":\"http://www.omg.org/spec/UML/20161101\",\"prefix\":\"uml\",\"associations\":[],\"types\":[{\"name\":\"Node\",\"superClass\":[\"bpmn:FlowNode\"],\"isAbstract\":true},{\"name\":\"ClassNode\",\"superClass\":[\"uml:Node\"],\"isAbstract\":true},{\"name\":\"Edge\",\"superClass\":[\"bpmn:SequenceFlow\"],\"isAbstract\":true},{\"name\":\"Label\",\"superClass\":[\"bpmn:TextAnnotation\"],\"properties\":[{\"name\":\"belongs_to\",\"type\":\"String\",\"isRef\":true,\"isAttr\":true},{\"name\":\"label_type\",\"type\":\"LabelType\",\"isAttr\":true}]},{\"name\":\"LabelType\",\"literalValues\":[{\"name\":\"name\"},{\"name\":\"attribute\"},{\"name\":\"method\"},{\"name\":\"source_multiplicity\"},{\"name\":\"target_multiplicity\"},{\"name\":\"enum_value\"}]},{\"name\":\"Class\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Interface\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"AbstractClass\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Enumeration\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Object\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Utility\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Library\",\"superClass\":[\"uml:ClassNode\"]},{\"name\":\"Package\",\"superClass\":[\"bpmn:SubChoreography\"]},{\"name\":\"Comment\",\"superClass\":[\"uml:Node\"]},{\"name\":\"Qualifier\",\"superClass\":[\"uml:Node\"],\"properties\":[{\"name\":\"belongs_to\",\"type\":\"String\",\"isRef\":true,\"isAttr\":true}]},{\"name\":\"NAryAssociationDiamond\",\"superClass\":[\"uml:Node\"]},{\"name\":\"Relationship\",\"superClass\":[\"uml:Edge\"],\"isAbstract\":true,\"properties\":[{\"name\":\"has_arrowhead\",\"type\":\"Boolean\",\"isAttr\":true,\"default\":false}]},{\"name\":\"Extension\",\"superClass\":[\"uml:Edge\"]},{\"name\":\"Realization\",\"superClass\":[\"uml:Edge\"]},{\"name\":\"Dependency\",\"superClass\":[\"uml:Edge\"]},{\"name\":\"Association\",\"superClass\":[\"uml:Relationship\"],\"properties\":[{\"name\":\"crossed\",\"type\":\"Boolean\",\"isAttr\":true,\"default\":false}]},{\"name\":\"Aggregation\",\"superClass\":[\"uml:Relationship\"]},{\"name\":\"Composition\",\"superClass\":[\"uml:Relationship\"]},{\"name\":\"CommentConnection\",\"superClass\":[\"uml:Edge\"]}]}");
 
 /***/ }),
 
@@ -31570,7 +31570,8 @@ Canvas.prototype._init = function(config) {
     'connection.added',
     'shape.removed',
     'connection.removed',
-    'elements.changed'
+    'elements.changed',
+    'plane.set'
   ], function() {
     delete this._cachedViewbox;
   }, this);
@@ -31711,9 +31712,7 @@ Canvas.prototype.getPlane = function(name) {
     throw new Error('must specify a name');
   }
 
-  var plane = this._planes[name];
-
-  return plane;
+  return this._planes[name];
 };
 
 /**
@@ -32351,9 +32350,10 @@ Canvas.prototype.viewbox = function(box) {
   if (!box) {
 
     // compute the inner box based on the
-    // diagrams default layer. This allows us to exclude
+    // diagrams active plane. This allows us to exclude
     // external components, such as overlays
-    innerBox = this.getDefaultLayer().getBBox();
+
+    innerBox = (this._activePlane && this._activePlane.layer.getBBox()) || {};
 
     transform = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_4__["transform"])(viewport);
     matrix = transform ? transform.matrix : Object(tiny_svg__WEBPACK_IMPORTED_MODULE_4__["createMatrix"])();
@@ -32369,10 +32369,10 @@ Canvas.prototype.viewbox = function(box) {
       height: outerBox.height / scale,
       scale: scale,
       inner: {
-        width: innerBox.width,
-        height: innerBox.height,
-        x: innerBox.x,
-        y: innerBox.y
+        width: innerBox.width || 0,
+        height: innerBox.height || 0,
+        x: innerBox.x || 0,
+        y: innerBox.y || 0
       },
       outer: outerBox
     };
