@@ -149,7 +149,7 @@
           "isAbstract": true,
           "properties": [
             {
-              "name": "directed",
+              "name": "has_arrowhead",
               "type": "Boolean",
               "isAttr": true,
               "default": false

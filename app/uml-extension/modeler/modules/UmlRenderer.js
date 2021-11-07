@@ -139,7 +139,7 @@ export default class UmlRenderer extends BaseRenderer {
 
         //for these types of connections, we need an marker end 
         if (isAny(connection, [UmlConnectionType.EXTENSION, UmlConnectionType.REALIZATION, UmlConnectionType.DEPENDENCY]) 
-            || (isAny(connection, [UmlConnectionType.RELATIONSHIP]) && connection.businessObject.directed)) {
+            || (isAny(connection, [UmlConnectionType.RELATIONSHIP]) && connection.businessObject.has_arrowhead)) {
 
             attrs.markerEnd = this.renderUtil.marker(connectionType, NO_FILLCOLOR, color, MarkerType.END);
         }

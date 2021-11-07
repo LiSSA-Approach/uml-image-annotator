@@ -252,7 +252,7 @@ export default class UmlContextPadProvider {
 
         function _changeDirected(event, element) {
             modeling.updateProperties(element, {
-                directed: !element.businessObject.directed
+                has_arrowhead: !element.businessObject.has_arrowhead
             });
         }
 
