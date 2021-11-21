@@ -2243,11 +2243,14 @@ class UmlContextPadProvider {
             actions = {},
             actionMap = this._actionMap;
 
-        this._elementToActions.get(type).forEach(actionName => {
-            Object(min_dash__WEBPACK_IMPORTED_MODULE_7__["assign"])(actions, {
-                [actionName]: actionMap.get(actionName) 
+        let elementActions = this._elementToActions.get(type);
+        if (elementActions !== undefined) {
+            elementActions.forEach(actionName => {
+                Object(min_dash__WEBPACK_IMPORTED_MODULE_7__["assign"])(actions, {
+                    [actionName]: actionMap.get(actionName) 
+                });
             });
-        });
+        }
         
         return actions;
     }
@@ -2485,6 +2488,8 @@ class UmlFactory extends bpmn_js_lib_features_modeling_BpmnFactory__WEBPACK_IMPO
     _ensureId(element) {
         let prefix;
         if (Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_1__["isAny"])(element, [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_2__["default"].EDGE, _utils_UmlNodeType__WEBPACK_IMPORTED_MODULE_3__["default"].PACKAGE])) {
+
+            /* Converts "uml:type" to "type" and creates ID prefix "type_" */
             prefix = (element.$type || '').replace(/^[^:]*:/g, '') + '_';
             element.id = this._model.ids.nextPrefixed(prefix, element);
         } else {
@@ -2733,6 +2738,11 @@ class UmlRenderer extends diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_MOD
 
         } else if (Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_12__["isAny"])(shape, [_utils_UmlNodeType__WEBPACK_IMPORTED_MODULE_3__["default"].LABEL])) {
             return this.renderUtil.drawTextLabel(parent, shape);
+        }
+
+        /* Error is thrown when an UML shape should be drawn that is not defined in this method */
+        if (this.canRender(shape)) { 
+            console.error('Shape type ' + shape.type + ' needs to be defined in UmlRenderer drawShape()!')
         }
 
     }
@@ -31472,6 +31482,10 @@ function createGroup(parent, cls, childIndex) {
 var BASE_LAYER = 'base';
 var HIDDEN_MARKER = 'djs-element-hidden';
 
+// render plane contents behind utility layers
+var PLANE_LAYER_INDEX = 0;
+var UTILITY_LAYER_INDEX = 1;
+
 
 var REQUIRED_MODEL_ATTRS = {
   shape: [ 'x', 'y', 'width', 'height' ],
@@ -31632,7 +31646,7 @@ Canvas.prototype._clear = function() {
  * @returns {SVGElement}
  */
 Canvas.prototype.getDefaultLayer = function() {
-  return this.getLayer(BASE_LAYER);
+  return this.getLayer(BASE_LAYER, PLANE_LAYER_INDEX);
 };
 
 /**
@@ -31681,8 +31695,8 @@ Canvas.prototype.getLayer = function(name, index) {
  */
 Canvas.prototype._createLayer = function(name, index) {
 
-  if (!index) {
-    index = 0;
+  if (typeof index === 'undefined') {
+    index = UTILITY_LAYER_INDEX;
   }
 
   var childIndex = Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["reduce"])(this._layers, function(childIndex, layer) {
@@ -31741,7 +31755,7 @@ Canvas.prototype.createPlane = function(name, rootElement) {
     };
   }
 
-  var svgLayer = this.getLayer(name);
+  var svgLayer = this.getLayer(name, PLANE_LAYER_INDEX);
   Object(tiny_svg__WEBPACK_IMPORTED_MODULE_4__["classes"])(svgLayer).add(HIDDEN_MARKER);
 
   var plane = this._planes[name] = {
@@ -32425,12 +32439,16 @@ Canvas.prototype.scroll = function(delta) {
  * Scrolls the viewbox to contain the given element.
  * Optionally specify a padding to be applied to the edges.
  *
- * @param {Object} [element] the element to scroll to.
+ * @param {Object|String} [element] the element to scroll to.
  * @param {Object|Number} [padding=100] the padding to be applied. Can also specify top, bottom, left and right.
  *
  */
 Canvas.prototype.scrollToElement = function(element, padding) {
   var defaultPadding = 100;
+
+  if (typeof element === 'string') {
+    element = this._elementRegistry.get(element);
+  }
 
   // switch to correct Plane
   var targetPlane = this.findPlane(element);
@@ -48468,7 +48486,9 @@ var TOGGLE_SELECTOR = '.djs-palette-toggle',
     ENTRY_SELECTOR = '.entry',
     ELEMENT_SELECTOR = TOGGLE_SELECTOR + ', ' + ENTRY_SELECTOR;
 
-var PALETTE_OPEN_CLS = 'open',
+var PALETTE_PREFIX = 'djs-palette-',
+    PALETTE_SHOWN_CLS = 'shown',
+    PALETTE_OPEN_CLS = 'open',
     PALETTE_TWO_COLUMN_CLS = 'two-column';
 
 var DEFAULT_PRIORITY = 1000;
@@ -48586,6 +48606,7 @@ Palette.prototype._init = function() {
   var container = this._container = Object(min_dom__WEBPACK_IMPORTED_MODULE_1__["domify"])(Palette.HTML_MARKUP);
 
   parentContainer.appendChild(container);
+  Object(min_dom__WEBPACK_IMPORTED_MODULE_1__["classes"])(parentContainer).add(PALETTE_PREFIX + PALETTE_SHOWN_CLS);
 
   min_dom__WEBPACK_IMPORTED_MODULE_1__["delegate"].bind(container, ELEMENT_SELECTOR, 'click', function(event) {
 
@@ -48643,7 +48664,8 @@ Palette.prototype._toggleState = function(state) {
 
   var twoColumn;
 
-  var cls = Object(min_dom__WEBPACK_IMPORTED_MODULE_1__["classes"])(container);
+  var cls = Object(min_dom__WEBPACK_IMPORTED_MODULE_1__["classes"])(container),
+      parentCls = Object(min_dom__WEBPACK_IMPORTED_MODULE_1__["classes"])(parent);
 
   if ('twoColumn' in state) {
     twoColumn = state.twoColumn;
@@ -48653,9 +48675,11 @@ Palette.prototype._toggleState = function(state) {
 
   // always update two column
   cls.toggle(PALETTE_TWO_COLUMN_CLS, twoColumn);
+  parentCls.toggle(PALETTE_PREFIX + PALETTE_TWO_COLUMN_CLS, twoColumn);
 
   if ('open' in state) {
     cls.toggle(PALETTE_OPEN_CLS, state.open);
+    parentCls.toggle(PALETTE_PREFIX + PALETTE_OPEN_CLS, state.open);
   }
 
   eventBus.fire('palette.changed', {
