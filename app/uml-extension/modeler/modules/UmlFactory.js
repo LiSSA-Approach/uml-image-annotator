@@ -33,6 +33,8 @@ export default class UmlFactory extends BpmnFactory {
     _ensureId(element) {
         let prefix;
         if (isAny(element, [UmlConnectionType.EDGE, UmlNodeType.PACKAGE])) {
+
+            /* Converts "uml:type" to "type" and creates ID prefix "type_" */
             prefix = (element.$type || '').replace(/^[^:]*:/g, '') + '_';
             element.id = this._model.ids.nextPrefixed(prefix, element);
         } else {

@@ -106,6 +106,11 @@ export default class UmlRenderer extends BaseRenderer {
             return this.renderUtil.drawTextLabel(parent, shape);
         }
 
+        /* Error is thrown when an UML shape should be drawn that is not defined in this method */
+        if (this.canRender(shape)) { 
+            console.error('Shape type ' + shape.type + ' needs to be defined in UmlRenderer drawShape()!')
+        }
+
     }
 
     /**

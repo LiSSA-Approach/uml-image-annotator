@@ -135,11 +135,14 @@ export default class UmlContextPadProvider {
             actions = {},
             actionMap = this._actionMap;
 
-        this._elementToActions.get(type).forEach(actionName => {
-            assign(actions, {
-                [actionName]: actionMap.get(actionName) 
+        let elementActions = this._elementToActions.get(type);
+        if (elementActions !== undefined) {
+            elementActions.forEach(actionName => {
+                assign(actions, {
+                    [actionName]: actionMap.get(actionName) 
+                });
             });
-        });
+        }
         
         return actions;
     }
