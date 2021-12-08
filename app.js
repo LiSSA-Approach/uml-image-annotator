@@ -2216,11 +2216,11 @@ class UmlContextPadProvider {
                                     ADD_NAME, ADD_ATTRIBUTE, ADD_METHOD]],
             [_utils_UmlNodeType__WEBPACK_IMPORTED_MODULE_8__["default"].QUALIFIER, [REMOVE, ASSOCIATION, AGGREGATION, COMPOSITION, ADD_NAME]],
             [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_9__["default"].AGGREGATION, [REMOVE, ADD_EDGE_LABEL, ADD_SRC_MULT, ADD_TRT_MULT, 
-                                    CHANGE_DIRECTED, CHANGE_CROSSED]],
+                                    CHANGE_DIRECTED]],
             [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_9__["default"].ASSOCIATION, [REMOVE, ADD_EDGE_LABEL, ADD_SRC_MULT, ADD_TRT_MULT, 
                                     CHANGE_DIRECTED, CHANGE_CROSSED]],
             [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_9__["default"].COMPOSITION, [REMOVE, ADD_EDGE_LABEL, ADD_SRC_MULT, ADD_TRT_MULT, 
-                                    CHANGE_DIRECTED, CHANGE_CROSSED]],
+                                    CHANGE_DIRECTED]],
             [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_9__["default"].COMMENT_CONNECTION, [REMOVE]],
             [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_9__["default"].DEPENDENCY, [REMOVE, ADD_EDGE_LABEL]],
             [_utils_UmlConnectionType__WEBPACK_IMPORTED_MODULE_9__["default"].EXTENSION, [REMOVE, ADD_EDGE_LABEL]],
@@ -14684,12 +14684,12 @@ function DropOnFlowBehavior(eventBus, bpmnRules, modeling) {
       dockingPoint = intersection.bendpoint ? waypoints[intersection.index] : mid;
 
       // if last waypointBefore is inside shape's bounds, ignore docking point
-      if (!isPointInsideBBox(shape, waypointsBefore[waypointsBefore.length-1])) {
+      if (waypointsBefore.length === 1 || !isPointInsideBBox(shape, waypointsBefore[waypointsBefore.length-1])) {
         waypointsBefore.push(copy(dockingPoint));
       }
 
       // if first waypointAfter is inside shape's bounds, ignore docking point
-      if (!isPointInsideBBox(shape, waypointsAfter[0])) {
+      if (waypointsAfter.length === 1 || !isPointInsideBBox(shape, waypointsAfter[0])) {
         waypointsAfter.unshift(copy(dockingPoint));
       }
     }
