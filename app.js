@@ -10643,7 +10643,7 @@ function LabelEditingProvider(
 
   function activateDirectEdit(element, force) {
     if (force ||
-        Object(_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_4__["isAny"])(element, [ 'bpmn:Task', 'bpmn:TextAnnotation', 'bpmn:Group' ]) ||
+        Object(_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_4__["isAny"])(element, [ 'bpmn:Task', 'bpmn:TextAnnotation' ]) ||
         isCollapsedSubProcess(element)) {
 
       directEditing.activate(element);
@@ -11286,6 +11286,10 @@ BpmnFactory.prototype._needsId = function(element) {
 };
 
 BpmnFactory.prototype._ensureId = function(element) {
+  if (element.id) {
+    this._model.ids.claim(element.id, element);
+    return;
+  }
 
   // generate semantic ids for elements
   // bpmn:SequenceFlow -> SequenceFlow_ID
@@ -11356,7 +11360,8 @@ BpmnFactory.prototype.createDiWaypoint = function(point) {
 
 BpmnFactory.prototype.createDiEdge = function(semantic, waypoints, attrs) {
   return this.create('bpmndi:BPMNEdge', Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["assign"])({
-    bpmnElement: semantic
+    bpmnElement: semantic,
+    waypoint: this.createDiWaypoints(waypoints)
   }, attrs));
 };
 
@@ -13814,122 +13819,97 @@ function CreateParticipantBehavior(canvas, eventBus, modeling) {
     }
   });
 
-  function ensureCollaboration(context) {
-    var parent = context.parent,
-        collaboration;
-
+  // turn process into collaboration when creating first participant
+  function getOrCreateCollaboration() {
     var rootElement = canvas.getRootElement();
 
     if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(rootElement, 'bpmn:Collaboration')) {
-      collaboration = rootElement;
-    } else {
-
-      // update root element by making collaboration
-      collaboration = modeling.makeCollaboration();
-
-      // re-use process when creating first participant
-      context.process = parent;
+      return rootElement;
     }
 
-    context.parent = collaboration;
+    return modeling.makeCollaboration();
   }
 
-  // turn process into collaboration before adding participant
+  // when creating mutliple elements through `elements.create` parent must be set to collaboration
+  // and passed to `shape.create` as hint
+  this.preExecute('elements.create', HIGH_PRIORITY, function(context) {
+    var elements = context.elements,
+        parent = context.parent,
+        participant = findParticipant(elements),
+        hints;
+
+    if (participant && Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(parent, 'bpmn:Process')) {
+      context.parent = getOrCreateCollaboration();
+
+      hints = context.hints = context.hints || {};
+
+      hints.participant = participant;
+      hints.process = parent;
+      hints.processRef = Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["getBusinessObject"])(participant).get('processRef');
+    }
+  }, true);
+
+  // when creating single shape through `shape.create` parent must be set to collaboration
+  // unless it was already set through `elements.create`
   this.preExecute('shape.create', function(context) {
     var parent = context.parent,
         shape = context.shape;
 
     if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(shape, 'bpmn:Participant') && Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(parent, 'bpmn:Process')) {
-      ensureCollaboration(context);
+      context.parent = getOrCreateCollaboration();
+
+      context.process = parent;
+      context.processRef = Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["getBusinessObject"])(shape).get('processRef');
     }
   }, true);
 
+  // #execute necessary because #preExecute not called on CommandStack#redo
   this.execute('shape.create', function(context) {
-    var process = context.process,
-        shape = context.shape;
+    var hints = context.hints || {},
+        process = context.process || hints.process,
+        shape = context.shape,
+        participant = hints.participant;
 
-    if (process) {
-      context.oldProcessRef = shape.businessObject.processRef;
+    // both shape.create and elements.create must be handled
+    if (process && (!participant || shape === participant)) {
 
-      // re-use process when creating first participant
-      shape.businessObject.processRef = process.businessObject;
+      // monkey-patch process ref
+      Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["getBusinessObject"])(shape).set('processRef', Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["getBusinessObject"])(process));
     }
   }, true);
 
   this.revert('shape.create', function(context) {
-    var process = context.process,
-        shape = context.shape;
+    var hints = context.hints || {},
+        process = context.process || hints.process,
+        processRef = context.processRef || hints.processRef,
+        shape = context.shape,
+        participant = hints.participant;
 
-    if (process) {
+    // both shape.create and elements.create must be handled
+    if (process && (!participant || shape === participant)) {
 
-      // re-use process when creating first participant
-      shape.businessObject.processRef = context.oldProcessRef;
+      // monkey-patch process ref
+      Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["getBusinessObject"])(shape).set('processRef', processRef);
     }
   }, true);
 
   this.postExecute('shape.create', function(context) {
-    var process = context.process,
-        shape = context.shape;
+    var hints = context.hints || {},
+        process = context.process || context.hints.process,
+        shape = context.shape,
+        participant = hints.participant;
 
     if (process) {
+      var children = process.children.slice();
 
-      // move children from process to participant
-      var processChildren = process.children.slice();
-
-      modeling.moveElements(processChildren, { x: 0, y: 0 }, shape);
-    }
-
-  }, true);
-
-  // turn process into collaboration when creating participants
-  this.preExecute('elements.create', HIGH_PRIORITY, function(context) {
-    var elements = context.elements,
-        parent = context.parent,
-        participant;
-
-    var hasParticipants = findParticipant(elements);
-
-    if (hasParticipants && Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(parent, 'bpmn:Process')) {
-      ensureCollaboration(context);
-
-      participant = findParticipant(elements);
-
-      context.oldProcessRef = participant.businessObject.processRef;
-
-      // re-use process when creating first participant
-      participant.businessObject.processRef = parent.businessObject;
+      // both shape.create and elements.create must be handled
+      if (!participant) {
+        modeling.moveElements(children, { x: 0, y: 0 }, shape);
+      } else if (shape === participant) {
+        modeling.moveElements(children, { x: 0, y: 0 }, participant);
+      }
     }
   }, true);
-
-  this.revert('elements.create', function(context) {
-    var elements = context.elements,
-        process = context.process,
-        participant;
-
-    if (process) {
-      participant = findParticipant(elements);
-
-      // re-use process when creating first participant
-      participant.businessObject.processRef = context.oldProcessRef;
-    }
-  }, true);
-
-  this.postExecute('elements.create', function(context) {
-    var elements = context.elements,
-        process = context.process,
-        participant;
-
-    if (process) {
-      participant = findParticipant(elements);
-
-      // move children from process to first participant
-      var processChildren = process.children.slice();
-
-      modeling.moveElements(processChildren, { x: 0, y: 0 }, participant);
-    }
-
-  }, true);
-
 }
 
 CreateParticipantBehavior.$inject = [
@@ -17411,7 +17391,9 @@ function UnclaimIdBehavior(canvas, injector, moddle, modeling) {
     var rootElement = canvas.getRootElement(),
         rootElementBo = rootElement.businessObject;
 
-    moddle.ids.unclaim(rootElementBo.id);
+    if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(rootElement, 'bpmn:Collaboration')) {
+      moddle.ids.unclaim(rootElementBo.id);
+    }
   });
 }
 
@@ -18897,12 +18879,26 @@ SetColorHandler.prototype.postExecute = function(context) {
     // TODO @barmac: remove once we drop bpmn.io properties
     ensureLegacySupport(assignedDi);
 
-    self._commandStack.execute('element.updateProperties', {
-      element: element,
-      properties: {
-        di: assignedDi
-      }
-    });
+    if (element.labelTarget) {
+
+      // set label colors as bpmndi:BPMNLabel#color
+      self._commandStack.execute('element.updateModdleProperties', {
+        element: element,
+        moddleElement: element.businessObject.di.label,
+        properties: {
+          color: di['background-color']
+        }
+      });
+    } else {
+
+      // set colors bpmndi:BPMNEdge or bpmndi:BPMNShape
+      self._commandStack.execute('element.updateProperties', {
+        element: element,
+        properties: {
+          di: assignedDi
+        }
+      });
+    }
   });
 
 };
@@ -19989,33 +19985,19 @@ function computeLanesResize(shape, newBounds) {
 /*!*************************************************************************!*\
   !*** ./node_modules/bpmn-js/lib/features/modeling/util/ModelingUtil.js ***!
   \*************************************************************************/
-/*! exports provided: isAny, getParent */
+/*! exports provided: is, isAny, getParent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isAny", function() { return isAny; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getParent", function() { return getParent; });
-/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
-/* harmony import */ var _util_ModelUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+/* harmony import */ var _util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "is", function() { return _util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isAny", function() { return _util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["isAny"]; });
 
 
 
-
-
-/**
- * Return true if element has any of the given types.
- *
- * @param {djs.model.Base} element
- * @param {Array<string>} types
- *
- * @return {boolean}
- */
-function isAny(element, types) {
-  return Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["some"])(types, function(t) {
-    return Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_1__["is"])(element, t);
-  });
-}
 
 
 /**
@@ -20033,7 +20015,7 @@ function getParent(element, anyType) {
   }
 
   while ((element = element.parent)) {
-    if (isAny(element, anyType)) {
+    if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["isAny"])(element, anyType)) {
       return element;
     }
   }
@@ -20359,7 +20341,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
 
     create.start(event, [ subProcess, startEvent ], {
       hints: {
-        autoSelect: [ startEvent ]
+        autoSelect: [ subProcess ]
       }
     });
   }
@@ -20604,7 +20586,7 @@ ReplaceMenuProvider.prototype.getEntries = function(element) {
     return this._createEntries(element, _replace_ReplaceOptions__WEBPACK_IMPORTED_MODULE_4__["DATA_OBJECT_REFERENCE"]);
   }
 
-  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(businessObject, 'bpmn:DataStoreReference')) {
+  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(businessObject, 'bpmn:DataStoreReference') && !Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(element.parent, 'bpmn:Collaboration')) {
     return this._createEntries(element, _replace_ReplaceOptions__WEBPACK_IMPORTED_MODULE_4__["DATA_STORE_REFERENCE"]);
   }
 
@@ -25602,13 +25584,19 @@ function isLabel(element) {
 /*!****************************************************!*\
   !*** ./node_modules/bpmn-js/lib/util/ModelUtil.js ***!
   \****************************************************/
-/*! exports provided: is, getBusinessObject */
+/*! exports provided: is, isAny, getBusinessObject, getDi */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "is", function() { return is; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isAny", function() { return isAny; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBusinessObject", function() { return getBusinessObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDi", function() { return getDi; });
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+
+
+
 /**
  * Is an element of the given BPMN type?
  *
@@ -25625,6 +25613,20 @@ function is(element, type) {
 
 
 /**
+ * Return true if element has any of the given types.
+ *
+ * @param {djs.model.Base} element
+ * @param {Array<string>} types
+ *
+ * @return {boolean}
+ */
+function isAny(element, types) {
+  return Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["some"])(types, function(t) {
+    return is(element, t);
+  });
+}
+
+/**
  * Return the business object for a given element.
  *
  * @param  {djs.model.Base|ModdleElement} element
@@ -25633,6 +25635,19 @@ function is(element, type) {
  */
 function getBusinessObject(element) {
   return (element && element.businessObject) || element;
+}
+
+/**
+ * Return the di object for a given element.
+ *
+ * @param  {djs.model.Base} element
+ *
+ * @return {ModdleElement}
+ */
+function getDi(element) {
+  var bo = getBusinessObject(element);
+
+  return bo && bo.di;
 }
 
 /***/ }),
@@ -54634,14 +54649,23 @@ function TouchInteractionEvents(
   // the touch recognizer
   var recognizer;
 
-  function handler(type) {
+  function handler(type, buttonType) {
 
     return function(event) {
       log('element', type, event);
 
-      interactionEvents.fire(type, event);
+      var gfx = getGfx(event.target),
+          element = gfx && elementRegistry.get(gfx);
+
+      // translate into an actual mouse click event
+      if (buttonType) {
+        event.srcEvent.button = buttonType;
+      }
+
+      return interactionEvents.fire(type, event, element);
     };
   }
+
 
   function getGfx(target) {
     var node = Object(min_dom__WEBPACK_IMPORTED_MODULE_1__["closest"])(target, 'svg, .djs-element', true);
@@ -54652,10 +54676,6 @@ function TouchInteractionEvents(
 
     // touch recognizer
     recognizer = createTouchRecognizer(svg);
-
-    recognizer.on('doubletap', handler('element.dblclick'));
-
-    recognizer.on('tap', handler('element.click'));
 
     function startGrabCanvas(event) {
 
@@ -54732,6 +54752,9 @@ function TouchInteractionEvents(
       recognizer.on('pinchend', end);
       recognizer.on('pinchcancel', end);
     }
+
+    recognizer.on('tap', handler('element.click'));
+    recognizer.on('doubletap', handler('element.dblclick', 1));
 
     recognizer.on('panstart', startGrab);
     recognizer.on('press', startGrab);
@@ -73489,6 +73512,22 @@ function bind(fn, target) {
   return fn.bind(target);
 }
 
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
 function _extends() {
   _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -73536,6 +73575,14 @@ function assign(target) {
 function set(target, path, value) {
   var currentTarget = target;
   forEach(path, function (key, idx) {
+    if (typeof key !== 'number' && typeof key !== 'string') {
+      throw new Error('illegal key type: ' + _typeof(key) + '. Key should be of type number or string.');
+    }
+
+    if (key === 'constructor') {
+      throw new Error('illegal key: constructor');
+    }
+
     if (key === '__proto__') {
       throw new Error('illegal key: __proto__');
     }
@@ -73675,11 +73722,12 @@ function merge(target) {
 /*!************************************************!*\
   !*** ./node_modules/min-dom/dist/index.esm.js ***!
   \************************************************/
-/*! exports provided: attr, classes, clear, closest, delegate, domify, event, matches, query, queryAll, remove */
+/*! exports provided: assignStyle, attr, classes, clear, closest, delegate, domify, event, matches, query, queryAll, remove */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assignStyle", function() { return assign$1; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attr", function() { return attr; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "classes", function() { return classes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clear", function() { return clear; });
@@ -73691,6 +73739,101 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "query", function() { return query; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "queryAll", function() { return all; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remove", function() { return remove; });
+/**
+ * Flatten array, one level deep.
+ *
+ * @param {Array<?>} arr
+ *
+ * @return {Array<?>}
+ */
+
+var nativeToString = Object.prototype.toString;
+var nativeHasOwnProperty = Object.prototype.hasOwnProperty;
+function isUndefined(obj) {
+  return obj === undefined;
+}
+function isArray(obj) {
+  return nativeToString.call(obj) === '[object Array]';
+}
+/**
+ * Return true, if target owns a property with the given key.
+ *
+ * @param {Object} target
+ * @param {String} key
+ *
+ * @return {Boolean}
+ */
+
+function has(target, key) {
+  return nativeHasOwnProperty.call(target, key);
+}
+/**
+ * Iterate over collection; returning something
+ * (non-undefined) will stop iteration.
+ *
+ * @param  {Array|Object} collection
+ * @param  {Function} iterator
+ *
+ * @return {Object} return result that stopped the iteration
+ */
+
+function forEach(collection, iterator) {
+  var val, result;
+
+  if (isUndefined(collection)) {
+    return;
+  }
+
+  var convertKey = isArray(collection) ? toNum : identity;
+
+  for (var key in collection) {
+    if (has(collection, key)) {
+      val = collection[key];
+      result = iterator(val, convertKey(key));
+
+      if (result === false) {
+        return val;
+      }
+    }
+  }
+}
+
+function identity(arg) {
+  return arg;
+}
+
+function toNum(arg) {
+  return Number(arg);
+}
+
+/**
+ * Assigns style attributes in a style-src compliant way.
+ *
+ * @param {Element} element
+ * @param {...Object} styleSources
+ *
+ * @return {Element} the element
+ */
+function assign$1(element) {
+  var target = element.style;
+
+  for (var _len = arguments.length, styleSources = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    styleSources[_key - 1] = arguments[_key];
+  }
+
+  forEach(styleSources, function (style) {
+    if (!style) {
+      return;
+    }
+
+    forEach(style, function (value, key) {
+      target[key] = value;
+    });
+  });
+
+  return element;
+}
+
 /**
  * Set attribute `name` to `val`, or get attr `name`.
  *
@@ -73977,9 +74120,9 @@ function closest (element, selector, checkYourSelf) {
   return matchesSelector(currentElem, selector) ? currentElem : null;
 }
 
-var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
+var bind$1 = window.addEventListener ? 'addEventListener' : 'attachEvent',
     unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
-    prefix = bind !== 'addEventListener' ? 'on' : '';
+    prefix = bind$1 !== 'addEventListener' ? 'on' : '';
 
 /**
  * Bind `el` event `type` to `fn`.
@@ -73993,7 +74136,7 @@ var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
  */
 
 var bind_1 = function(el, type, fn, capture){
-  el[bind](prefix + type, fn, capture || false);
+  el[bind$1](prefix + type, fn, capture || false);
   return fn;
 };
 
@@ -74040,7 +74183,7 @@ var componentEvent = {
 // when delegating.
 var forceCaptureEvents = ['focus', 'blur'];
 
-function bind$1(el, selector, type, fn, capture) {
+function bind$2(el, selector, type, fn, capture) {
   if (forceCaptureEvents.indexOf(type) !== -1) {
     capture = true;
   }
@@ -74072,7 +74215,7 @@ function unbind$1(el, type, fn, capture) {
 }
 
 var delegate = {
-  bind: bind$1,
+  bind: bind$2,
   unbind: unbind$1
 };
 
@@ -74102,7 +74245,7 @@ if (typeof document !== 'undefined') {
  * Wrap map from jquery.
  */
 
-var map = {
+var map$1 = {
   legend: [1, '<fieldset>', '</fieldset>'],
   tr: [2, '<table><tbody>', '</tbody></table>'],
   col: [2, '<table><tbody></tbody><colgroup>', '</colgroup></table>'],
@@ -74111,27 +74254,27 @@ var map = {
   _default: innerHTMLBug ? [1, 'X<div>', '</div>'] : [0, '', '']
 };
 
-map.td =
-map.th = [3, '<table><tbody><tr>', '</tr></tbody></table>'];
+map$1.td =
+map$1.th = [3, '<table><tbody><tr>', '</tr></tbody></table>'];
 
-map.option =
-map.optgroup = [1, '<select multiple="multiple">', '</select>'];
+map$1.option =
+map$1.optgroup = [1, '<select multiple="multiple">', '</select>'];
 
-map.thead =
-map.tbody =
-map.colgroup =
-map.caption =
-map.tfoot = [1, '<table>', '</table>'];
+map$1.thead =
+map$1.tbody =
+map$1.colgroup =
+map$1.caption =
+map$1.tfoot = [1, '<table>', '</table>'];
 
-map.polyline =
-map.ellipse =
-map.polygon =
-map.circle =
-map.text =
-map.line =
-map.path =
-map.rect =
-map.g = [1, '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">','</svg>'];
+map$1.polyline =
+map$1.ellipse =
+map$1.polygon =
+map$1.circle =
+map$1.text =
+map$1.line =
+map$1.path =
+map$1.rect =
+map$1.g = [1, '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">','</svg>'];
 
 /**
  * Parse `html` and return a DOM Node instance, which could be a TextNode,
@@ -74166,7 +74309,7 @@ function parse(html, doc) {
   }
 
   // wrap map
-  var wrap = map[tag] || map._default;
+  var wrap = map$1[tag] || map$1._default;
   var depth = wrap[0];
   var prefix = wrap[1];
   var suffix = wrap[2];
@@ -76671,6 +76814,20 @@ Properties.prototype.get = function(target, name) {
  * @param  {Object} options
  */
 Properties.prototype.define = function(target, name, options) {
+
+  if (!options.writable) {
+
+    var value = options.value;
+
+    // use getters for read-only variables to support ES6 proxies
+    // cf. https://github.com/bpmn-io/internal-docs/issues/386
+    options = Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["assign"])({}, options, {
+      get: function() { return value; }
+    });
+
+    delete options.value;
+  }
+
   Object.defineProperty(target, name, options);
 };
 
