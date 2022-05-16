@@ -9,7 +9,7 @@ Check out [installation instructions of original repository](#original-installat
 1. Upload image of hand-sketched UML class diagram
 2. Model UML-class diagram over the image
 3. Download BPMN XML with custom UML elements
-4. Optional: To convert BPMN XML files and corresponding images into a [COCO](https://cocodataset.org/#format-data) dataset, check out [pybmn-uml](https://github.com/LiSSA-Approach/pybpmn-uml)
+4. Optional: To convert BPMN XML files and corresponding images into a [COCO](https://cocodataset.org/#format-data) dataset, check out [pybpmn-uml](https://github.com/LiSSA-Approach/pybpmn-uml)
 
 ## Custom UML modeler for bpmn-js
 
